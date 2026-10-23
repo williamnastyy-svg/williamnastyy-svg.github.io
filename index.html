@@ -1,0 +1,1772 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
+</head>
+<body>
+<title>رحلة الفلاسفة</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="theme-color" content="#FFFFFF">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap">
+<style>
+/* Layout concept: one phone-width column (max 430px) on a white canvas, centred on desktop.
+   Red is the only accent. Greek touches: Amiri display type, a meander band, marble-style busts
+   and Greek captions inside the scenes. */
+:root {
+  --red: #D32F2F; --red-2: #E53935; --red-deep: #B71C1C; --red-tint: #FFF3F1; --red-soft: #F8D7D4;
+  --ink: #26222B; --ink-2: #5B5662; --mute: #8D8893; --line: #ECE7EC; --paper: #FFFFFF; --outer: #F3F1F4;
+  --font-display: 'Amiri', 'Noto Naskh Arabic', 'Traditional Arabic', 'Times New Roman', serif;
+  --font-body: 'IBM Plex Sans Arabic', 'Noto Sans Arabic', 'Segoe UI', Tahoma, system-ui, sans-serif;
+  --ease: cubic-bezier(.2, .7, .2, 1);
+  --bar-h: 56px;
+  --dir: 1;
+}
+[dir="rtl"] { --dir: -1; }
+
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  background: var(--outer); color: var(--ink);
+  font-family: var(--font-body); font-size: 16px; line-height: 1.6;
+  -webkit-font-smoothing: antialiased; overflow-x: hidden;
+}
+/* paints the phone's top inset so nothing scrolls into view above the sticky bar */
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); background: var(--paper); z-index: 50; }
+h1, h2, h3, h4, p, figure, ol, ul { margin: 0; padding: 0; }
+ol, ul { list-style: none; }
+button { font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+textarea { font: inherit; color: inherit; }
+:focus-visible { outline: 3px solid var(--red); outline-offset: 2px; border-radius: 6px; }
+
+.gutter {
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+.frame {
+  position: relative; max-width: 430px; margin: 0 auto; min-height: 100dvh;
+  background: var(--paper); box-shadow: 0 0 0 1px var(--line); overflow-x: clip;
+}
+@media (min-width: 520px) { .frame { box-shadow: 0 0 0 1px var(--line), 0 24px 60px rgba(38, 34, 43, .10); } }
+
+.i { fill: none; stroke: currentColor; stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round; }
+.icon-btn {
+  position: relative; width: 44px; height: 44px; display: grid; place-items: center;
+  border-radius: 12px; color: var(--red); transition: background .2s;
+}
+.icon-btn:hover { background: var(--red-tint); }
+.icon-btn:active { background: var(--red-soft); }
+.icon-btn .i { width: 26px; height: 26px; }
+.icon-btn .dot {
+  position: absolute; top: 8px; inset-inline-end: 8px; width: 11px; height: 11px;
+  border-radius: 50%; background: var(--red); border: 2.5px solid var(--paper);
+}
+.rtl-flip { transform: scaleX(var(--dir)); }
+
+/* intro: the motto holds for exactly 2s while the rule fills, then the screen fades out */
+.splash {
+  position: fixed; inset: 0; z-index: 100; display: grid; place-items: center;
+  background: var(--paper); animation: splash-out .7s ease 2s forwards;
+}
+.splash-in { display: grid; justify-items: center; gap: 20px; padding: 0 24px; text-align: center; }
+.motto {
+  font-family: var(--font-display); font-weight: 700; font-size: clamp(34px, 10vw, 46px);
+  line-height: 1.5; color: var(--red); text-wrap: balance;
+}
+.splash-rule { display: block; width: 64px; height: 2px; background: var(--red); transform: scaleX(0); animation: rule 2s linear forwards; }
+@keyframes rule { to { transform: scaleX(1); } }
+@keyframes splash-out { to { opacity: 0; visibility: hidden; } }
+
+.app { animation: app-in .8s var(--ease) 1.95s backwards; }
+@keyframes app-in { from { opacity: 0; transform: translateY(10px); } }
+@keyframes fade { from { opacity: 0; } }
+@keyframes rise-in { from { opacity: 0; transform: translateY(8px); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .splash-rule { animation: none; transform: none; }
+  .app { animation: none; }
+  *, *::before, *::after { transition-duration: .01ms !important; scroll-behavior: auto !important; }
+  .panel, .detail, .menu, .sheet, .drawer, .scrim { animation-duration: .01ms !important; }
+}
+
+/* ---- dashboard ---- */
+.topbar { height: var(--bar-h); display: grid; grid-template-columns: 44px 1fr 44px; align-items: center; }
+.brand { justify-self: center; font-family: var(--font-display); font-weight: 700; font-size: 22px; color: var(--red); line-height: 1; }
+
+.founder { display: flex; align-items: center; gap: 16px; padding-block: 8px 20px; }
+.founder-photo {
+  flex: none; width: 78px; height: 78px; border-radius: 50%; object-fit: cover; background: var(--red-tint);
+  box-shadow: 0 0 0 3px var(--paper), 0 0 0 5px var(--red);
+}
+.founder-text { min-width: 0; }
+.founder-name {
+  font-family: var(--font-display); font-weight: 700; font-size: 22px; line-height: 1.55;
+  color: var(--red); text-wrap: balance;
+}
+.founder-badge {
+  display: inline-block; margin-top: 6px; padding: 1px 13px 3px; border: 1px solid var(--red-soft);
+  background: var(--red-tint); border-radius: 999px; direction: ltr; unicode-bidi: isolate;
+  font-family: var(--font-display); font-style: italic; font-size: 16px; letter-spacing: .02em; color: var(--ink-2);
+}
+.meander {
+  height: 11px; margin-left: max(16px, env(safe-area-inset-left, 0px)); margin-right: max(16px, env(safe-area-inset-right, 0px));
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='11' viewBox='0 0 16 11'%3E%3Cpath d='M0 9.8H16M2 9.8V1.8H12.5V7.3H6V4.5H9' fill='none' stroke='%23F0B3AE' stroke-width='1.5' stroke-linecap='square'/%3E%3C/svg%3E") repeat-x left center;
+}
+
+.tabs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; padding-block: 20px 0; }
+.tab {
+  display: grid; justify-items: center; align-content: start; gap: 8px; padding: 12px 4px 11px; min-width: 0;
+  border: 1.5px solid var(--line); border-radius: 14px; background: var(--paper);
+  transition: border-color .2s, background .2s, transform .2s var(--ease);
+}
+.tab:hover { border-color: var(--red-soft); }
+.tab:active { transform: scale(.98); }
+.tab-av { width: 56px; height: 56px; border-radius: 50%; background: var(--red-tint); overflow: hidden; transition: box-shadow .2s; }
+.tab-av svg { display: block; width: 100%; height: 100%; }
+.tab-name { max-width: 100%; font-weight: 600; font-size: 15.5px; line-height: 1.3; color: var(--ink); overflow-wrap: anywhere; text-align: center; }
+.tab.is-on { border-color: var(--red); background: var(--red-tint); }
+.tab.is-on .tab-av { box-shadow: 0 0 0 2px var(--red); }
+.tab.is-on .tab-name { color: var(--red); font-weight: 700; }
+
+.panel { padding-block: 24px 30px; animation: rise-in .35s var(--ease); }
+.panel-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; }
+.panel-id { min-width: 0; }
+.p-name { font-family: var(--font-display); font-weight: 700; font-size: 40px; line-height: 1.25; color: var(--red); }
+.p-epithet { margin-top: 2px; font-size: 15.5px; line-height: 1.7; color: var(--ink-2); text-wrap: balance; }
+.p-bust {
+  flex: none; display: block; width: 92px; height: 92px; border-radius: 50%; background: var(--red-tint); overflow: hidden;
+  box-shadow: 0 0 0 3px var(--paper), 0 0 0 5px var(--red);
+}
+.p-bust svg { display: block; width: 100%; height: 100%; }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+.chip {
+  display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px 4px 11px; border: 1px solid var(--line);
+  border-radius: 999px; background: var(--paper); font-size: 13.5px; line-height: 1.5; color: var(--ink-2);
+}
+.chip .i { width: 15px; height: 15px; color: var(--red); stroke-width: 2.1; flex: none; }
+.p-intro { margin-top: 16px; max-width: 60ch; font-size: 16.5px; line-height: 1.95; color: var(--ink); }
+
+.cta {
+  display: block; width: 100%; min-height: 54px; margin-top: 24px; border-radius: 10px;
+  background: var(--red); color: #fff; font-weight: 700; font-size: 19px; letter-spacing: .01em;
+  transition: background .2s, transform .15s;
+}
+.cta:hover { background: var(--red-deep); }
+.cta:active { transform: translateY(1px); }
+.cta-ghost { background: var(--paper); color: var(--red); border: 1.5px solid var(--red); }
+.cta-ghost:hover { background: var(--red-tint); }
+
+/* ---- philosopher view ---- */
+.detail { animation: detail-in .38s var(--ease); }
+@keyframes detail-in { from { opacity: 0; transform: translateX(calc(var(--dir) * 28px)); } }
+
+.dbar { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; background: var(--paper); border-bottom: 1px solid var(--line); }
+.dbar-row { height: var(--bar-h); display: grid; grid-template-columns: 96px 1fr 96px; align-items: center; }
+.dbar-row > :first-child { justify-self: start; }
+.dbar-title { justify-self: center; font-family: var(--font-display); font-weight: 700; font-size: 23px; line-height: 1; color: var(--red); }
+.dbar-tools { justify-self: end; display: flex; }
+.progress { height: 3px; background: var(--red-soft); }
+.progress i { display: block; height: 100%; background: var(--red); transform: scaleX(0); transform-origin: left; }
+[dir="rtl"] .progress i { transform-origin: right; }
+
+.jump { display: flex; gap: 6px; overflow-x: auto; padding-block: 8px; scrollbar-width: none; overscroll-behavior-x: contain; }
+.jump::-webkit-scrollbar { display: none; }
+.jump button {
+  flex: none; min-width: 48px; height: 30px; padding: 0 11px; border: 1px solid var(--line); border-radius: 999px;
+  font-size: 13px; font-weight: 600; color: var(--ink-2); font-variant-numeric: tabular-nums; transition: background .2s, color .2s, border-color .2s;
+}
+.jump button.is-on { background: var(--red); border-color: var(--red); color: #fff; }
+
+.hero { display: flex; align-items: center; gap: 16px; padding-block: 24px 4px; }
+.hero .p-bust { width: 96px; height: 96px; }
+.hero h2 { font-family: var(--font-display); font-weight: 700; font-size: 42px; line-height: 1.2; color: var(--red); }
+.hero p { margin-top: 2px; font-size: 15.5px; line-height: 1.7; color: var(--ink-2); text-wrap: balance; }
+
+.tl-title { padding-block: 22px 4px; font-size: 14px; font-weight: 600; color: var(--mute); }
+.timeline { padding-block: 10px 6px; }
+.step { position: relative; padding-inline-start: 34px; padding-bottom: 36px; scroll-margin-top: 122px; }
+.step::before {
+  content: ""; position: absolute; inset-inline-start: 0; top: 4px; width: 18px; height: 18px; border-radius: 50%;
+  background: var(--paper); border: 3px solid var(--red); transition: background .25s;
+}
+.step::after { content: ""; position: absolute; inset-inline-start: 8px; top: 26px; bottom: -4px; width: 2px; background: var(--red-soft); }
+.step:last-child::after { display: none; }
+.step.is-on::before { background: var(--red); }
+.step-head { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-bottom: 12px; }
+.year {
+  display: inline-block; padding: 2px 13px 3px; border-radius: 999px; background: var(--red); color: #fff;
+  font-weight: 700; font-size: 14px; line-height: 1.5; font-variant-numeric: tabular-nums;
+}
+.art-card { border-radius: 16px; overflow: hidden; border: 1px solid var(--line); background: var(--red-tint); }
+svg.art { display: block; width: 100%; height: auto; }
+.step h3 { margin-top: 16px; font-family: var(--font-display); font-weight: 700; font-size: 26px; line-height: 1.4; color: var(--ink); text-wrap: balance; }
+.step p { margin-top: 6px; max-width: 60ch; font-size: 16.5px; line-height: 1.95; color: var(--ink-2); }
+
+@supports (animation-timeline: view()) {
+  .step-body { animation: rise-in linear both; animation-timeline: view(); animation-range: entry 0% entry 40%; }
+}
+
+.legacy { padding-block: 6px 8px; }
+.legacy h3 { font-family: var(--font-display); font-weight: 700; font-size: 30px; line-height: 1.3; color: var(--red); }
+.legacy p { margin-top: 6px; max-width: 60ch; font-size: 16.5px; line-height: 1.95; color: var(--ink-2); }
+.legacy .cap { margin-top: 18px; margin-bottom: 8px; font-size: 14px; font-weight: 600; color: var(--mute); }
+.foot { padding-block: 20px 40px; }
+
+/* ---- language menu, notes sheet, drawer, toast ---- */
+.lang { position: relative; }
+.menu {
+  position: absolute; inset-inline-end: 0; top: calc(100% + 4px); min-width: 180px; padding: 6px; z-index: 30;
+  background: var(--paper); border: 1px solid var(--line); border-radius: 14px;
+  box-shadow: 0 14px 36px rgba(38, 34, 43, .16); animation: rise-in .18s var(--ease);
+}
+.menu button {
+  display: flex; align-items: center; justify-content: space-between; gap: 12px; width: 100%; min-height: 44px;
+  padding: 0 12px; border-radius: 9px; font-size: 16px; font-weight: 500; text-align: start;
+}
+.menu button:hover { background: var(--red-tint); }
+.menu button[aria-checked="true"] { color: var(--red); font-weight: 700; }
+.menu .i { width: 18px; height: 18px; color: var(--red); stroke-width: 2.4; }
+
+.layer { position: fixed; inset: 0; z-index: 70; display: flex; justify-content: center; }
+.scrim { position: absolute; inset: 0; background: rgba(38, 34, 43, .42); animation: fade .25s ease; }
+
+.sheet {
+  position: relative; align-self: flex-end; width: min(100%, 430px); max-height: 88dvh; display: flex; flex-direction: column;
+  background: var(--paper); border-radius: 22px 22px 0 0; box-shadow: 0 -12px 40px rgba(38, 34, 43, .2);
+  padding-bottom: max(14px, env(safe-area-inset-bottom, 0px)); animation: sheet-up .32s var(--ease);
+}
+@keyframes sheet-up { from { opacity: 0; transform: translateY(40px); } }
+.sheet-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding-block: 10px 4px; }
+.sheet-head h3 { font-family: var(--font-display); font-weight: 700; font-size: 24px; line-height: 1.3; color: var(--red); }
+.note-wrap { margin: 8px max(16px, env(safe-area-inset-right, 0px)) 0 max(16px, env(safe-area-inset-left, 0px)); padding: 4px 14px; border: 1.5px solid var(--line); border-radius: 14px; background: var(--paper); transition: border-color .2s; }
+.note-wrap:focus-within { border-color: var(--red); }
+.note-area {
+  display: block; width: 100%; min-height: 224px; max-height: 44dvh; resize: none; border: 0; outline: 0; background-color: transparent;
+  padding: 0; font-size: 17px; line-height: 32px; color: var(--ink);
+  background-image: repeating-linear-gradient(transparent 0 31px, var(--red-soft) 31px 32px); background-attachment: local;
+}
+.note-area::placeholder { color: var(--mute); }
+.sheet-foot { display: flex; align-items: center; gap: 8px; padding-block: 14px 0; }
+.note-status { flex: 1; min-width: 0; font-size: 14px; font-weight: 600; color: var(--red); }
+.btn { min-height: 44px; padding: 0 20px; border-radius: 10px; font-weight: 700; font-size: 16px; transition: background .2s; }
+.btn-solid { background: var(--red); color: #fff; }
+.btn-solid:hover { background: var(--red-deep); }
+.btn-ghost { border: 1.5px solid var(--line); color: var(--ink-2); }
+.btn-ghost:hover { background: var(--red-tint); }
+.note-hint { padding-block: 10px 0; font-size: 13px; line-height: 1.6; color: var(--mute); }
+
+.drawer-frame { position: relative; width: min(100%, 430px); height: 100%; }
+.drawer {
+  position: absolute; inset-block: 0; inset-inline-start: 0; width: min(86%, 330px); display: flex; flex-direction: column; overflow-y: auto;
+  background: var(--paper); box-shadow: calc(var(--dir) * 12px) 0 40px rgba(38, 34, 43, .2);
+  padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px);
+  animation: drawer-in .32s var(--ease);
+}
+@keyframes drawer-in { from { transform: translateX(calc(var(--dir) * -100%)); } }
+.drawer-head { display: flex; align-items: center; justify-content: space-between; height: var(--bar-h); padding-inline: 16px 8px; }
+.drawer-head h3 { font-family: var(--font-display); font-weight: 700; font-size: 22px; color: var(--red); }
+.drawer h4 { padding: 18px 16px 4px; font-size: 13px; font-weight: 600; color: var(--mute); }
+.nav-item { display: flex; align-items: center; gap: 12px; width: 100%; min-height: 54px; padding: 6px 16px; font-size: 17px; font-weight: 500; text-align: start; transition: background .2s; }
+.nav-item:hover { background: var(--red-tint); }
+.nav-item[aria-current="true"] { color: var(--red); font-weight: 700; }
+.nav-item .i { width: 24px; height: 24px; color: var(--red); }
+.nav-item .mini { flex: none; width: 38px; height: 38px; border-radius: 50%; background: var(--red-tint); overflow: hidden; }
+.nav-item .mini svg { display: block; width: 100%; height: 100%; }
+.seg { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; padding: 6px 16px 0; }
+.seg button { min-height: 44px; border: 1.5px solid var(--line); border-radius: 10px; font-size: 15px; font-weight: 600; transition: background .2s, border-color .2s; }
+.seg button[aria-pressed="true"] { border-color: var(--red); background: var(--red-tint); color: var(--red); }
+.drawer-foot { margin-top: auto; padding: 24px 16px 20px; text-align: center; font-family: var(--font-display); font-weight: 700; font-size: 21px; color: var(--red); }
+
+.toast {
+  position: fixed; left: 50%; bottom: max(28px, env(safe-area-inset-bottom, 0px)); z-index: 90; padding: 10px 20px;
+  border-radius: 999px; background: var(--ink); color: #fff; font-size: 15px; font-weight: 600; white-space: nowrap;
+  transform: translateX(-50%); animation: toast 1.9s ease forwards;
+}
+@keyframes toast { 0% { opacity: 0; transform: translate(-50%, 10px); } 12%, 82% { opacity: 1; transform: translate(-50%, 0); } 100% { opacity: 0; transform: translate(-50%, 0); } }
+
+/* ---- additions: scroll lock, view fades, anchors ---- */
+.no-scroll { overflow: hidden; }
+.home { animation: fade .3s ease; }
+.legacy { scroll-margin-top: 122px; }
+.tab-name { hyphens: auto; }
+.menu[hidden] { display: none; }
+@media (prefers-reduced-motion: reduce) { .step-body, .home { animation: none !important; } }
+
+</style>
+<div class="frame" id="frame" dir="rtl" lang="ar">
+  <div class="splash" id="splash" aria-hidden="true">
+    <div class="splash-in">
+      <p class="motto">الجهل منبع للشر</p>
+      <i class="splash-rule"></i>
+    </div>
+  </div>
+  <main class="app" id="app"></main>
+  <div id="layers"></div>
+</div>
+<script>
+(function(){
+'use strict';
+/* ---- 00-photo.js ---- */
+/* founder photo: square crop, 360px, embedded so the page stays one file */
+const PHOTO_SRC = "data:image/jpeg;base64,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";
+
+/* ---- 10-i18n.js ---- */
+/* Languages, interface strings and small formatting helpers */
+const LANG_ORDER = ['es', 'ar', 'en'];
+const LANGS = {
+  es: { name: 'Español', dir: 'ltr' },
+  ar: { name: 'العربية', dir: 'rtl' },
+  en: { name: 'English', dir: 'ltr' }
+};
+let lang = 'ar';
+const DATA = {};
+
+const UI = {
+  ar: {
+    appName: 'رحلة الفلاسفة',
+    founder: 'المؤسس الزعيم علي مرتضى غالي 🙇🏻',
+    badge: 'Future lieutenant ⭐️',
+    photoAlt: 'صورة المؤسس',
+    tabsLabel: 'اختر فيلسوفاً',
+    open: 'فتح',
+    back: 'رجوع',
+    menu: 'القائمة',
+    close: 'إغلاق',
+    notes: 'ملاحظاتي',
+    notesTitle: 'ملاحظاتي عن',
+    notesHint: 'تُحفظ ملاحظاتك على هذا الجهاز.',
+    notesPlaceholder: 'اكتب ما تتعلمه هنا…',
+    save: 'حفظ',
+    clear: 'مسح',
+    saved: 'تم الحفظ',
+    translate: 'تغيير اللغة',
+    home: 'الرئيسية',
+    philosophers: 'الفلاسفة',
+    settings: 'الإعدادات',
+    language: 'اللغة',
+    replay: 'إعادة المقدمة',
+    timeline: 'رحلة الحياة',
+    legacy: 'الإرث',
+    chain: 'من المعلّم إلى التلميذ',
+    backHome: 'العودة إلى الرئيسية',
+    stopWord: 'المحطة'
+  },
+  en: {
+    appName: 'Philosophers’ Journey',
+    founder: 'Founder & Leader Ali Murtada Ghali 🙇🏻',
+    badge: 'Future lieutenant ⭐️',
+    photoAlt: 'Founder photo',
+    tabsLabel: 'Choose a philosopher',
+    open: 'Open',
+    back: 'Back',
+    menu: 'Menu',
+    close: 'Close',
+    notes: 'My notes',
+    notesTitle: 'My notes on',
+    notesHint: 'Your notes are saved on this device.',
+    notesPlaceholder: 'Write what you learn here…',
+    save: 'Save',
+    clear: 'Clear',
+    saved: 'Saved',
+    translate: 'Change language',
+    home: 'Home',
+    philosophers: 'Philosophers',
+    settings: 'Settings',
+    language: 'Language',
+    replay: 'Replay intro',
+    timeline: 'Life journey',
+    legacy: 'Legacy',
+    chain: 'From teacher to student',
+    backHome: 'Back to home',
+    stopWord: 'Stop'
+  },
+  es: {
+    appName: 'El viaje de los filósofos',
+    founder: 'Fundador y Líder Ali Murtada Ghali 🙇🏻',
+    badge: 'Futuro teniente ⭐️',
+    photoAlt: 'Foto del fundador',
+    tabsLabel: 'Elige un filósofo',
+    open: 'Abrir',
+    back: 'Volver',
+    menu: 'Menú',
+    close: 'Cerrar',
+    notes: 'Mis notas',
+    notesTitle: 'Mis notas sobre',
+    notesHint: 'Tus notas se guardan en este dispositivo.',
+    notesPlaceholder: 'Escribe aquí lo que aprendes…',
+    save: 'Guardar',
+    clear: 'Borrar',
+    saved: 'Guardado',
+    translate: 'Cambiar idioma',
+    home: 'Inicio',
+    philosophers: 'Filósofos',
+    settings: 'Ajustes',
+    language: 'Idioma',
+    replay: 'Ver la intro otra vez',
+    timeline: 'Recorrido de su vida',
+    legacy: 'Legado',
+    chain: 'De maestro a discípulo',
+    backHome: 'Volver al inicio',
+    stopWord: 'Parada'
+  }
+};
+
+const ui = k => (UI[lang] && UI[lang][k]) || UI.en[k] || k;
+const tx = o => (o && (o[lang] || o.en)) || '';
+const num = n => (lang === 'ar' ? String(n).replace(/\d/g, d => '٠١٢٣٤٥٦٧٨٩'[d]) : String(n));
+
+const ERA = {
+  ar: { bc: 'ق.م', c: 'نحو' },
+  en: { bc: 'BC', c: 'c.' },
+  es: { bc: 'a. C.', c: 'c.' }
+};
+
+/* '470' | 'c470' | '432-422' | '428/427' -> localized label; always BC */
+function fmtYear(spec) {
+  const approx = spec.charAt(0) === 'c';
+  const body = approx ? spec.slice(1) : spec;
+  const sep = body.indexOf('/') > -1 ? '/' : '–';
+  const parts = body.split(/[\/-]/).map(num);
+  return (approx ? ERA[lang].c + ' ' : '') + parts.join(sep) + ' ' + ERA[lang].bc;
+}
+function shortYear(spec) {
+  const body = spec.charAt(0) === 'c' ? spec.slice(1) : spec;
+  return num(body.split(/[\/-]/)[0]);
+}
+const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+
+/* ---- 20-data-socrates.js ---- */
+/* Socrates: c. 470 - 399 BC */
+DATA.socrates = {
+  id: 'socrates',
+  span: 'c470-399',
+  name: { ar: 'سقراط', en: 'Socrates', es: 'Sócrates' },
+  from: { ar: 'أثينا', en: 'Athens', es: 'Atenas' },
+  tag: {
+    ar: 'الرجل الذي علّم الناس أن يسألوا',
+    en: 'The man who taught Athens to ask questions',
+    es: 'El hombre que enseñó a Atenas a preguntar'
+  },
+  intro: {
+    ar: 'عاش سقراط حياته كلها في أثينا. لم يكتب شيئاً، وكان يعلّم بالأسئلة في السوق العامة، حتى حوكم وفضّل الموت على أن يتوقف عن التساؤل. نعرفه اليوم من كتب تلميذه أفلاطون.',
+    en: 'Socrates lived his whole life in Athens. He wrote nothing and taught by asking questions in the marketplace, until he was put on trial and chose death over giving up his questions. Plato’s books are how we know him.',
+    es: 'Sócrates vivió toda su vida en Atenas. No escribió nada y enseñaba haciendo preguntas en el ágora, hasta que lo juzgaron y prefirió morir antes que dejar de cuestionar. Lo conocemos por los libros de Platón.'
+  },
+  stops: [
+    {
+      y: 'c470', art: 'soc_birth',
+      place: { ar: 'أثينا، حيّ ألوبيكي', en: 'Athens, Alopece', es: 'Atenas, Alopece' },
+      t: { ar: 'ولادة في أثينا', en: 'Born in Athens', es: 'Nace en Atenas' },
+      d: {
+        ar: 'وُلد نحو ٤٧٠ ق.م في حيّ ألوبيكي بأثينا. كان أبوه سوفرونيسكوس نحّات حجارة، وأمه فاينريت قابلة. نشأ في وقتٍ كانت أثينا تدخل فيه عصرها الذهبي في زمن بريكليس.',
+        en: 'Born around 470 BC in the Athenian district of Alopece. His father Sophroniscus was a stonemason and his mother Phaenarete a midwife. He grew up as Athens entered its golden age under Pericles.',
+        es: 'Nació hacia el 470 a. C. en el barrio ateniense de Alopece. Su padre, Sofronisco, era cantero y su madre, Fenarete, partera. Creció mientras Atenas entraba en su edad de oro con Pericles.'
+      }
+    },
+    {
+      y: 'c450', art: 'soc_craft',
+      place: { ar: 'أثينا', en: 'Athens', es: 'Atenas' },
+      t: { ar: 'من النحت إلى الفلسفة', en: 'From stone to ideas', es: 'De la piedra a las ideas' },
+      d: {
+        ar: 'تعلّم قطع الحجارة مثل أبيه، ثم ترك المهنة. لم يملك إلا القليل، ولبس ثوباً بسيطاً وكثيراً ما مشى حافياً. صار عمله الحقيقي أن يحاور الناس حول كيف يعيشون حياة جيدة.',
+        en: 'Like his father, he learned to cut stone. He later gave up the trade, owned almost nothing, wore a plain cloak and often went barefoot. His real work became talking with people about how to live well.',
+        es: 'Igual que su padre, aprendió a tallar piedra. Más tarde dejó el oficio, casi no tenía bienes, vestía un manto sencillo y a menudo iba descalzo. Su verdadero trabajo pasó a ser conversar con la gente sobre cómo vivir bien.'
+      }
+    },
+    {
+      y: '432-422', art: 'soc_war',
+      place: {
+        ar: 'بوتيديا، ديليوم، أمفيبوليس',
+        en: 'Potidaea, Delium, Amphipolis',
+        es: 'Potidea, Delio, Anfípolis'
+      },
+      t: { ar: 'جندي في جيش أثينا', en: 'A soldier of Athens', es: 'Soldado de Atenas' },
+      d: {
+        ar: 'في حرب البيلوبونيز قاتل جندياً مشاةً ثقيلاً في بوتيديا وديليوم وأمفيبوليس. تذكّره رفاقه بصبره على البرد والجوع، وبهدوئه أثناء الانسحاب في ديليوم.',
+        en: 'During the Peloponnesian War he fought as a heavy infantryman at Potidaea, Delium and Amphipolis. Comrades remembered his endurance in cold and hunger, and his calm during the retreat at Delium.',
+        es: 'En la guerra del Peloponeso luchó como hoplita en Potidea, Delio y Anfípolis. Sus compañeros recordaban su resistencia al frío y al hambre, y su calma durante la retirada de Delio.'
+      }
+    },
+    {
+      y: 'mid', ys: '•', art: 'soc_delphi',
+      yl: { ar: 'منتصف العمر', en: 'Mid-life', es: 'En la madurez' },
+      place: { ar: 'دلفي', en: 'Delphi', es: 'Delfos' },
+      t: { ar: 'كاهنة دلفي', en: 'The oracle at Delphi', es: 'El oráculo de Delfos' },
+      d: {
+        ar: 'سأل صديقه خايريفون كاهنة دلفي إن كان أحدٌ أحكم من سقراط، فجاء الجواب: لا. حار سقراط، فذهب يسأل من يُعدّون حكماء في أثينا، واكتشف أنهم يظنون أنهم يعلمون وهم لا يعلمون.',
+        en: 'His friend Chaerephon asked the oracle at Delphi whether anyone was wiser than Socrates. The answer was no. Puzzled, Socrates went to question the people Athens called wise, and found they only believed they knew.',
+        es: 'Su amigo Querefonte preguntó al oráculo de Delfos si alguien era más sabio que Sócrates. La respuesta fue que no. Desconcertado, Sócrates fue a interrogar a los que Atenas consideraba sabios y descubrió que solo creían saber.'
+      }
+    },
+    {
+      y: 'c430-399', art: 'soc_agora',
+      place: { ar: 'الأغورا، سوق أثينا', en: 'The Agora', es: 'El ágora' },
+      t: { ar: 'الأسئلة في السوق', en: 'Questions in the marketplace', es: 'Preguntas en el ágora' },
+      d: {
+        ar: 'قضى أيامه في الأغورا يطرح أسئلة قصيرة حتى تتهاوى الفكرة أو تثبت، وهذه هي الطريقة السقراطية. لم يكتب شيئاً. تزوج من زانثيب وأنجب ثلاثة أبناء، وقال إن الحياة التي لا تُفحص لا تستحق أن تُعاش.',
+        en: 'He spent his days in the Agora asking short questions until an idea fell apart or held firm. This is the Socratic method. He wrote nothing. He married Xanthippe, had three sons, and said an unexamined life is not worth living.',
+        es: 'Pasaba los días en el ágora haciendo preguntas breves hasta que una idea se rompía o se sostenía. Es el método socrático. No escribió nada. Se casó con Jantipa, tuvo tres hijos y decía que una vida sin examen no merece ser vivida.'
+      }
+    },
+    {
+      y: '406-404', art: 'soc_refuse',
+      place: { ar: 'أثينا', en: 'Athens', es: 'Atenas' },
+      t: { ar: 'يقول لا للظلم', en: 'Saying no to injustice', es: 'Decir no a la injusticia' },
+      d: {
+        ar: 'في ٤٠٦ ق.م كان عضواً في مجلس أثينا حين أُريد إدانة قادة معركة أرجينوساي بتصويت واحد غير قانوني، فرفض طرحه للتصويت. وفي ٤٠٤ ق.م أمره الطغاة الثلاثون أن يشارك في اعتقال رجل بريء هو ليون السلاميني، فعاد إلى بيته.',
+        en: 'In 406 BC he sat on Athens’ council when it was pushed to condemn the generals of Arginusae in one illegal vote, and he refused to put it to the vote. In 404 BC the Thirty Tyrants ordered him to help arrest an innocent man, Leon of Salamis. He walked home instead.',
+        es: 'En el 406 a. C. formaba parte del consejo de Atenas cuando se quiso condenar a los generales de las Arginusas en una sola votación ilegal, y se negó a someterla a voto. En el 404 a. C. los Treinta Tiranos le ordenaron ayudar a arrestar a un inocente, León de Salamina. Se fue a su casa.'
+      }
+    },
+    {
+      y: '399', art: 'soc_trial',
+      place: { ar: 'محكمة أثينا', en: 'An Athenian court', es: 'Tribunal de Atenas' },
+      t: { ar: 'المحاكمة', en: 'The trial', es: 'El juicio' },
+      d: {
+        ar: 'اتّهمه ميليتوس وأنيتوس وليكون بعدم تعظيم آلهة المدينة وبإفساد الشباب. أدانته هيئة من ٥٠١ مواطناً بفارق نحو ٦٠ صوتاً. وحين طُلب منه أن يقترح عقوبته اقترح أولاً أن يُطعَم على نفقة المدينة، فحكمت الهيئة بالإعدام.',
+        en: 'Meletus, Anytus and Lycon accused him of not honoring the city’s gods and of corrupting the young. A jury of 501 citizens found him guilty by about 60 votes. Asked to name his own penalty, he first proposed free meals at public expense, and the jury voted for death.',
+        es: 'Meleto, Ánito y Licón lo acusaron de no honrar a los dioses de la ciudad y de corromper a los jóvenes. Un jurado de 501 ciudadanos lo declaró culpable por unos 60 votos de diferencia. Al pedirle que propusiera su pena, sugirió primero comidas gratuitas a costa de la ciudad, y el jurado votó la muerte.'
+      }
+    },
+    {
+      y: '399', art: 'soc_hemlock',
+      place: { ar: 'سجن أثينا', en: 'Athens, in prison', es: 'Atenas, en prisión' },
+      t: { ar: 'كأس الشوكران', en: 'The cup of hemlock', es: 'La copa de cicuta' },
+      d: {
+        ar: 'أمضى نحو شهر في السجن. عرض عليه صديقه كريتون أن يهرب فرفض، وقال إنه لن يخالف قوانين مدينة عاش فيها سبعين عاماً. عند الغروب شرب الشوكران بين أصدقائه، وكانت آخر كلماته أن يسدّد كريتون ديناً: ديكاً لأسكليبيوس.',
+        en: 'He spent about a month in prison. His friend Crito offered an escape and he refused, saying he would not break the laws of the city he had lived in for seventy years. At sunset he drank the hemlock among his friends. His last words asked Crito to pay a debt of a rooster to Asclepius.',
+        es: 'Pasó cerca de un mes en prisión. Su amigo Critón le ofreció escapar y él se negó: no rompería las leyes de la ciudad donde había vivido setenta años. Al atardecer bebió la cicuta entre sus amigos. Sus últimas palabras pidieron a Critón que pagara un gallo que debían a Asclepio.'
+      }
+    }
+  ],
+  legacy: {
+    t: { ar: 'لم يكتب سطراً، وبقي اسمه', en: 'No books, and a name that stayed', es: 'Ningún libro y un nombre que quedó' },
+    d: {
+      ar: 'لم يترك سقراط كتباً، لكن تلميذه أفلاطون جعله بطل أعظم أعمال الفلسفة. علّم أفلاطون أرسطو، وعلّم أرسطو الإسكندر الأكبر. وهنا بدأت عادة مساءلة ما نظن أننا نعرفه.',
+      en: 'Socrates left no books, but his student Plato wrote him into some of the greatest works of philosophy. Plato taught Aristotle, and Aristotle taught Alexander the Great. The habit of questioning what we think we know starts here.',
+      es: 'Sócrates no dejó libros, pero su discípulo Platón lo convirtió en protagonista de grandes obras de filosofía. Platón enseñó a Aristóteles y Aristóteles enseñó a Alejandro Magno. Aquí empieza el hábito de cuestionar lo que creemos saber.'
+    }
+  }
+};
+
+/* ---- 21-data-plato.js ---- */
+/* Plato: c. 428/427 - 348/347 BC */
+DATA.plato = {
+  id: 'plato',
+  span: 'c428-347',
+  name: { ar: 'أفلاطون', en: 'Plato', es: 'Platón' },
+  from: { ar: 'أثينا', en: 'Athens', es: 'Atenas' },
+  tag: {
+    ar: 'تلميذ سقراط ومؤسس الأكاديمية',
+    en: 'Student of Socrates, founder of the Academy',
+    es: 'Discípulo de Sócrates y fundador de la Academia'
+  },
+  intro: {
+    ar: 'وُلد أفلاطون في أسرة أثينية نبيلة وكان يُعدّ للسياسة، حتى غيّر إعدام معلّمه سقراط وجهته. أسّس الأكاديمية، من أوائل مدارس التعليم العالي في العالم الغربي، وكتب حوارات مثل «الجمهورية».',
+    en: 'Plato was born into a noble Athenian family and expected to enter politics, until the execution of his teacher Socrates changed his course. He founded the Academy, one of the first schools of higher learning in the Western world, and wrote dialogues such as the Republic.',
+    es: 'Platón nació en una familia noble de Atenas y estaba destinado a la política, hasta que la ejecución de su maestro Sócrates cambió su rumbo. Fundó la Academia, una de las primeras escuelas de estudios superiores de Occidente, y escribió diálogos como La República.'
+  },
+  stops: [
+    {
+      y: 'c428/427', art: 'pla_birth',
+      place: { ar: 'أثينا', en: 'Athens', es: 'Atenas' },
+      t: { ar: 'وُلد في أسرة نبيلة', en: 'Born into a noble family', es: 'Nace en una familia noble' },
+      d: {
+        ar: 'وُلد نحو ٤٢٨ ق.م، وأثينا في حرب مع إسبرطة. جاء أبوه أريستون وأمه بيريكتيوني من أسرتين عريقتين في أثينا. سُمّي أريستوكليس، ويقال إن «أفلاطون» ومعناه «العريض» كان لقباً له.',
+        en: 'Born around 428 BC, while Athens was at war with Sparta. His father Ariston and his mother Perictione came from old Athenian families. He was named Aristocles, and “Plato”, meaning broad, is said to have been a nickname.',
+        es: 'Nació hacia el 428 a. C., con Atenas en guerra contra Esparta. Su padre, Aristón, y su madre, Perictione, venían de familias antiguas de Atenas. Se llamó Aristocles, y se dice que «Platón», que significa «ancho», fue un apodo.'
+      }
+    },
+    {
+      y: 'c415', art: 'pla_youth',
+      place: { ar: 'أثينا', en: 'Athens', es: 'Atenas' },
+      t: { ar: 'مصارع وشاعر', en: 'Wrestler and poet', es: 'Luchador y poeta' },
+      d: {
+        ar: 'كان شاباً قوياً، تدرّب على المصارعة، وتقول الروايات إنه شارك في الألعاب الإيستمية. كتب أيضاً الشعر والمسرحيات، وتوقّع لنفسه مستقبلاً في السياسة كأقاربه.',
+        en: 'A strong young man, he trained as a wrestler and, by tradition, competed at the Isthmian Games. He also wrote poetry and plays, and expected a career in politics like his relatives.',
+        es: 'Joven fuerte, se entrenó como luchador y, según la tradición, compitió en los Juegos Ístmicos. También escribió poesía y teatro, y esperaba una carrera política como sus parientes.'
+      }
+    },
+    {
+      y: 'c408', art: 'pla_meet',
+      place: { ar: 'أثينا', en: 'Athens', es: 'Atenas' },
+      t: { ar: 'لقاؤه بسقراط', en: 'Meeting Socrates', es: 'El encuentro con Sócrates' },
+      d: {
+        ar: 'في نحو العشرين من عمره بدأ يتبع سقراط ويصغي إلى أسئلته. تقول حكاية متأخرة إنه أحرق مآسيه الشعرية بعد ذلك. بقي قريباً من سقراط قرابة عشر سنوات حتى النهاية.',
+        en: 'At about twenty he began to follow Socrates and listen to his questions. A later legend says he burned his own tragedies afterwards. He stayed close to Socrates for nearly ten years, until the end.',
+        es: 'Hacia los veinte años empezó a seguir a Sócrates y a escuchar sus preguntas. Una leyenda tardía dice que después quemó sus propias tragedias. Estuvo cerca de él casi diez años, hasta el final.'
+      }
+    },
+    {
+      y: 'c399-388', art: 'pla_travel',
+      place: {
+        ar: 'ميغارا، قورينا، مصر، إيطاليا',
+        en: 'Megara, Cyrene, Egypt, Italy',
+        es: 'Mégara, Cirene, Egipto, Italia'
+      },
+      t: { ar: 'بعد سقراط: سنوات السفر', en: 'After Socrates: years abroad', es: 'Tras Sócrates: años de viaje' },
+      d: {
+        ar: 'رأى أقارب له بين الطغاة الثلاثين يحكمون بالرعب، ثم رأى الديمقراطية تعدم سقراط. فتخلّى عن السياسة وغادر أثينا، وتقول الروايات إنه زار ميغارا وقورينا ومصر، ثم وصل إلى جنوب إيطاليا حيث التقى بالفيثاغوريين.',
+        en: 'He had watched relatives among the Thirty Tyrants rule by terror, then watched democracy put Socrates to death. Giving up on politics, he left Athens and, by tradition, visited Megara, Cyrene and Egypt before reaching southern Italy, where he met Pythagorean thinkers.',
+        es: 'Había visto a parientes suyos entre los Treinta Tiranos gobernar con terror y luego a la democracia ejecutar a Sócrates. Renunció a la política y salió de Atenas; la tradición dice que visitó Mégara, Cirene y Egipto antes de llegar al sur de Italia, donde conoció a pensadores pitagóricos.'
+      }
+    },
+    {
+      y: 'c387', art: 'pla_academy',
+      place: { ar: 'أثينا، بستان أكاديموس', en: 'Athens, grove of Academus', es: 'Atenas, bosque de Academo' },
+      t: { ar: 'تأسيس الأكاديمية', en: 'He founds the Academy', es: 'Funda la Academia' },
+      d: {
+        ar: 'عاد إلى أثينا نحو ٣٨٧ ق.م وهو في الأربعين تقريباً، وفتح مدرسة في بستان مقدّس للبطل أكاديموس. درس فيها الطلاب الرياضيات والفلك والفلسفة. استمرت الأكاديمية قروناً، ومن اسمها جاءت كلمة «أكاديمية».',
+        en: 'Back in Athens around 387 BC, at about forty, he opened a school in the grove sacred to the hero Academus. Students studied mathematics, astronomy and philosophy there. The Academy lasted for centuries and gave us the word “academy”.',
+        es: 'De regreso en Atenas hacia el 387 a. C., con unos cuarenta años, abrió una escuela en el bosque consagrado al héroe Academo. Allí se estudiaban matemáticas, astronomía y filosofía. La Academia duró siglos y dio nombre a la palabra «academia».'
+      }
+    },
+    {
+      y: 'c380-360', art: 'pla_cave',
+      place: { ar: 'الأكاديمية', en: 'The Academy', es: 'La Academia' },
+      t: { ar: 'الكهف وعالم المُثُل', en: 'The cave and the Forms', es: 'La caverna y las Ideas' },
+      d: {
+        ar: 'كتب أفكاره في حوارات يكون سقراط المتحدث الرئيس فيها. في «الجمهورية» تصوّر قصة الكهف ناساً مقيّدين لا يرون إلا الظلال. ورأى أفلاطون أن المعرفة الحقيقية تبلغ المُثُل الثابتة التي تقف وراء الأشياء التي نراها.',
+        en: 'He wrote his ideas as dialogues, with Socrates as the main speaker. In the Republic, the Allegory of the Cave pictures people chained so that they see only shadows. Plato argued that real knowledge reaches the unchanging Forms behind the things we see.',
+        es: 'Escribió sus ideas en diálogos con Sócrates como voz principal. En La República, la alegoría de la caverna muestra a personas encadenadas que solo ven sombras. Platón sostenía que el verdadero conocimiento alcanza las Ideas inmutables que están detrás de lo que vemos.'
+      }
+    },
+    {
+      y: '367-361', art: 'pla_syracuse',
+      place: { ar: 'سيراقوسة، صقلية', en: 'Syracuse, Sicily', es: 'Siracusa, Sicilia' },
+      t: { ar: 'الفيلسوف والطاغية', en: 'The philosopher and the tyrant', es: 'El filósofo y el tirano' },
+      d: {
+        ar: 'كانت زيارته الأولى لسيراقوسة نحو ٣٨٨ ق.م، وتقول الروايات إنه أغضب الطاغية ديونيسيوس الأول فبيع عبداً ثم افتداه صديق. عاد في ٣٦٧ و٣٦١ ق.م آملاً أن يعلّم ديونيسيوس الثاني الحكم بالحكمة. فشلت المحاولتان، ورجع إلى الأكاديمية.',
+        en: 'His first visit to Syracuse, around 388 BC, is said to have angered the tyrant Dionysius I, who had him sold as a slave until a friend ransomed him. He returned in 367 and 361 BC hoping to train Dionysius II as a wise ruler. Both attempts failed and he went back to the Academy.',
+        es: 'Su primera visita a Siracusa, hacia el 388 a. C., habría enfurecido al tirano Dionisio I, que lo vendió como esclavo hasta que un amigo lo rescató. Volvió en el 367 y el 361 a. C. con la esperanza de formar a Dionisio II como gobernante sabio. Ambos intentos fracasaron y regresó a la Academia.'
+      }
+    },
+    {
+      y: 'c348', art: 'pla_death',
+      place: { ar: 'أثينا، الأكاديمية', en: 'Athens, the Academy', es: 'Atenas, la Academia' },
+      t: { ar: 'عمر طويل من التعليم', en: 'A long life of teaching', es: 'Una larga vida enseñando' },
+      d: {
+        ar: 'واصل أفلاطون التعليم والكتابة حتى شيخوخته، وتوفي نحو ٣٤٨ أو ٣٤٧ ق.م وعمره نحو ثمانين عاماً. تقول الروايات القديمة إنه مات وهو يكتب، أو في حفل زفاف. دُفن في أرض الأكاديمية، وتولى ابن أخته سبوسيبوس إدارة المدرسة.',
+        en: 'Plato kept teaching and writing into old age and died around 348 or 347 BC, at about eighty. Ancient stories say he died while writing, or at a wedding feast. He was buried in the grounds of the Academy, and his nephew Speusippus took over the school.',
+        es: 'Platón siguió enseñando y escribiendo hasta la vejez y murió hacia el 348 o 347 a. C., con unos ochenta años. Las historias antiguas dicen que murió escribiendo o en un banquete de bodas. Lo enterraron en los terrenos de la Academia y su sobrino Espeusipo dirigió la escuela.'
+      }
+    }
+  ],
+  legacy: {
+    t: { ar: 'معلّم أرسطو', en: 'Aristotle’s teacher', es: 'El maestro de Aristóteles' },
+    d: {
+      ar: 'انضم أرسطو إلى الأكاديمية في ٣٦٧ ق.م وهو في السابعة عشرة، ودرس فيها عشرين عاماً. وما زالت حوارات أفلاطون، التي كُتبت لتُبقي أسئلة سقراط حيّة، تُقرأ في صفوف الفلسفة حول العالم.',
+      en: 'A seventeen-year-old Aristotle joined the Academy in 367 BC and studied there for twenty years. Plato’s dialogues, written to keep Socrates’ questions alive, are still read in philosophy classes around the world.',
+      es: 'Aristóteles, con diecisiete años, entró en la Academia en el 367 a. C. y estudió allí veinte años. Los diálogos de Platón, escritos para mantener vivas las preguntas de Sócrates, se siguen leyendo en las clases de filosofía de todo el mundo.'
+    }
+  }
+};
+
+/* ---- 22-data-aristotle.js ---- */
+/* Aristotle: content in ar / en / es. `art` names the illustration drawn in 3x-art-aristotle.js */
+DATA.aristotle = {
+  id: 'aristotle',
+  name: { ar: 'أرسطو', en: 'Aristotle', es: 'Aristóteles' },
+  span: '384-322',
+  from: { ar: 'ستاغيرا', en: 'Stagira', es: 'Estagira' },
+  tag: {
+    ar: 'المعلّم الأول، ومعلّم الإسكندر',
+    en: 'Teacher of Alexander, father of logic',
+    es: 'Maestro de Alejandro y padre de la lógica',
+  },
+  intro: {
+    ar: 'فيلسوف وعالم يوناني وُلد في ستاغيرا. تتلمذ على أفلاطون عشرين سنة، ثم علّم الإسكندر الأكبر وأسّس مدرسة الليقيون في أثينا. وضع علم المنطق ودرس الأحياء والأخلاق والسياسة والشعر، وظلّت كتبه مرجعاً في أوروبا والعالم الإسلامي قروناً طويلة.',
+    en: 'A Greek philosopher and scientist born in Stagira. He studied under Plato for twenty years, tutored Alexander the Great and founded the Lyceum in Athens. He built the science of logic and wrote on biology, ethics, politics and poetry. His books shaped learning in Europe and the Islamic world for centuries.',
+    es: 'Filósofo y científico griego nacido en Estagira. Estudió veinte años con Platón, fue maestro de Alejandro Magno y fundó el Liceo en Atenas. Creó la lógica como ciencia y escribió sobre biología, ética, política y poesía. Sus obras guiaron el saber de Europa y del mundo islámico durante siglos.',
+  },
+  stops: [
+    {
+      y: '384', art: 'ari_birth',
+      place: { ar: 'ستاغيرا', en: 'Stagira', es: 'Estagira' },
+      t: { ar: 'الولادة في ستاغيرا', en: 'Born in Stagira', es: 'Nace en Estagira' },
+      d: {
+        ar: 'وُلد سنة ٣٨٤ ق.م. في بلدة ستاغيرا الساحلية شمال اليونان. كان أبوه نيقوماخوس طبيب بلاط ملك مقدونيا، فاقترب منذ صغره من الطبيعة والتشريح. وفقد أبويه وهو صغير ورعاه وصيّ عليه.',
+        en: 'He was born in 384 BC in the coastal town of Stagira in northern Greece. His father, Nicomachus, was physician at the Macedonian royal court, which drew the boy early toward nature and anatomy. He lost his parents young and was raised by a guardian.',
+        es: 'Nació en el 384 a. C. en Estagira, una ciudad costera del norte de Grecia. Su padre, Nicómaco, era médico de la corte real de Macedonia, lo que acercó al niño desde pequeño a la naturaleza y la anatomía. Perdió pronto a sus padres y lo crió un tutor.',
+      },
+    },
+    {
+      y: '367-347', art: 'ari_academy',
+      place: { ar: 'الأكاديمية، أثينا', en: 'The Academy, Athens', es: 'La Academia, Atenas' },
+      t: { ar: 'عشرون عاماً في أكاديمية أفلاطون', en: 'Twenty years in Plato’s Academy', es: 'Veinte años en la Academia de Platón' },
+      d: {
+        ar: 'في السابعة عشرة سافر إلى أثينا والتحق بأكاديمية أفلاطون، وبقي فيها عشرين عاماً طالباً ثم معلّماً. اختلف مع أستاذه في مسألة جوهرية: أفلاطون ينظر إلى عالم المُثُل فوقنا، وأرسطو يرى أن الحقيقة في الأشياء التي نراها ونفحصها.',
+        en: 'At seventeen he travelled to Athens and joined Plato’s Academy, where he stayed twenty years, first as a student and then as a teacher. He disagreed with his master on a core point: Plato looked up to a world of Forms, while Aristotle held that truth lies in the things we can see and examine.',
+        es: 'A los diecisiete años viajó a Atenas e ingresó en la Academia de Platón, donde estuvo veinte años, primero como alumno y luego como maestro. Discrepó de su maestro en un punto esencial: Platón miraba hacia un mundo de Ideas, y Aristóteles sostenía que la verdad está en las cosas que podemos ver y examinar.',
+      },
+    },
+    {
+      y: '347-343', art: 'ari_lesbos',
+      place: { ar: 'أسوس وليسبوس', en: 'Assos and Lesbos', es: 'Asos y Lesbos' },
+      t: { ar: 'البحث في الطبيعة', en: 'Studying nature', es: 'Estudiando la naturaleza' },
+      d: {
+        ar: 'بعد وفاة أفلاطون غادر أثينا إلى أسوس في آسيا الصغرى حيث تزوّج بيثياس. ثم انتقل إلى جزيرة ليسبوس، وراح يدرس الحيوانات والأسماك والنباتات ويصف ما يراه ويصنّفه، فكانت تلك بداية علم الأحياء.',
+        en: 'After Plato’s death he left Athens for Assos in Asia Minor, where he married Pythias. He then moved to the island of Lesbos and studied animals, fish and plants, describing and classifying what he saw. It was an early foundation for the science of biology.',
+        es: 'Tras la muerte de Platón salió de Atenas hacia Asos, en Asia Menor, donde se casó con Pitias. Después se trasladó a la isla de Lesbos y estudió animales, peces y plantas, describiendo y clasificando lo que veía. Fue un temprano cimiento de la biología.',
+      },
+    },
+    {
+      y: '343/342', art: 'ari_alexander',
+      place: { ar: 'ميزا، مقدونيا', en: 'Mieza, Macedonia', es: 'Mieza, Macedonia' },
+      t: { ar: 'معلّم الإسكندر', en: 'Tutor of Alexander', es: 'Maestro de Alejandro' },
+      d: {
+        ar: 'دعاه الملك فيليب الثاني إلى مقدونيا ليعلّم ابنه الإسكندر، وكان في الثالثة عشرة. درّسه الأدب والسياسة والعلوم عدة سنوات. وصار الإسكندر بعد ذلك ملكاً فتح جزءاً كبيراً من العالم المعروف.',
+        en: 'King Philip II invited him to Macedonia to teach his son Alexander, then thirteen. Aristotle taught him literature, politics and science for several years. Alexander later became a king who conquered much of the known world.',
+        es: 'El rey Filipo II lo invitó a Macedonia para educar a su hijo Alejandro, que tenía trece años. Aristóteles le enseñó literatura, política y ciencias durante varios años. Alejandro llegó a ser un rey que conquistó gran parte del mundo conocido.',
+      },
+    },
+    {
+      y: '335', art: 'ari_lyceum',
+      place: { ar: 'الليقيون، أثينا', en: 'The Lyceum, Athens', es: 'El Liceo, Atenas' },
+      t: { ar: 'تأسيس الليقيون', en: 'Founding the Lyceum', es: 'Funda el Liceo' },
+      d: {
+        ar: 'عاد إلى أثينا وأسّس مدرسته الليقيون في بستان مخصّص لأبولو. كان يلقي دروسه وهو يمشي مع طلابه في الممرّات المسقوفة، ولذلك سُمّي أتباعه «المشّائين». وجمع فيها مكتبة كبيرة وخرائط وعيّنات من الطبيعة.',
+        en: 'He returned to Athens and founded his own school, the Lyceum, in a grove sacred to Apollo. He lectured while walking with his students along covered paths, so his followers were called the Peripatetics, “those who walk about”. The school gathered a large library, maps and specimens from nature.',
+        es: 'Volvió a Atenas y fundó su propia escuela, el Liceo, en un bosque consagrado a Apolo. Daba clase paseando con sus alumnos por galerías cubiertas, por eso a sus seguidores se les llamó peripatéticos, «los que pasean». Reunió una gran biblioteca, mapas y muestras de la naturaleza.',
+      },
+    },
+    {
+      y: '335-323', art: 'ari_works',
+      place: { ar: 'الليقيون، أثينا', en: 'The Lyceum, Athens', es: 'El Liceo, Atenas' },
+      t: { ar: 'المنطق والعلوم', en: 'Logic and the sciences', es: 'La lógica y las ciencias' },
+      d: {
+        ar: 'في نحو اثني عشر عاماً أنتج أعمالاً في المنطق والفيزياء والأحياء والأخلاق والسياسة والشعر. ابتكر القياس المنطقي: كل إنسان فانٍ، وسقراط إنسان، إذن سقراط فانٍ. وعلّم أن الفضيلة وسطٌ بين رذيلتين، فالشجاعة بين الجبن والتهوّر.',
+        en: 'In about twelve years he produced work on logic, physics, biology, ethics, politics and poetry. He devised the syllogism: all humans are mortal; Socrates is human; therefore Socrates is mortal. He taught that virtue is a middle path between two vices, such as courage between cowardice and recklessness.',
+        es: 'En unos doce años produjo obras de lógica, física, biología, ética, política y poesía. Ideó el silogismo: todos los humanos son mortales; Sócrates es humano; luego Sócrates es mortal. Enseñó que la virtud es un punto medio entre dos vicios, como el valor entre la cobardía y la temeridad.',
+      },
+    },
+    {
+      y: '323', art: 'ari_flight',
+      place: { ar: 'من أثينا إلى خالكيس', en: 'From Athens to Chalcis', es: 'De Atenas a Calcis' },
+      t: { ar: 'الرحيل عن أثينا', en: 'Leaving Athens', es: 'Sale de Atenas' },
+      d: {
+        ar: 'مات الإسكندر في بابل سنة ٣٢٣ ق.م. فاشتعل الغضب في أثينا على كل ما هو مقدوني، واتُّهم أرسطو بعدم احترام الآلهة. غادر المدينة إلى خالكيس، ويُروى أنه قال إنه لا يريد أن تخطئ أثينا مرتين في حق الفلسفة.',
+        en: 'Alexander died in Babylon in 323 BC and anger against everything Macedonian flared in Athens. Aristotle was accused of impiety. He left for Chalcis, reportedly saying he would not let Athens sin twice against philosophy.',
+        es: 'Alejandro murió en Babilonia en el 323 a. C. y en Atenas estalló la ira contra todo lo macedonio. Acusaron a Aristóteles de impiedad. Se marchó a Calcis y, según se cuenta, dijo que no dejaría que Atenas pecara dos veces contra la filosofía.',
+      },
+    },
+    {
+      y: '322', art: 'ari_death',
+      place: { ar: 'خالكيس', en: 'Chalcis', es: 'Calcis' },
+      t: { ar: 'الوفاة في خالكيس', en: 'Death in Chalcis', es: 'Muere en Calcis' },
+      d: {
+        ar: 'توفي في خالكيس سنة ٣٢٢ ق.م. وعمره اثنان وستون عاماً بسبب مرض في المعدة. تولّى تلميذه ثيوفراستوس قيادة الليقيون، وبقيت كتب أرسطو تُقرأ وتُترجم قروناً حتى سمّاه العرب «المعلّم الأول».',
+        en: 'He died in Chalcis in 322 BC, aged sixty-two, of a stomach illness. His student Theophrastus took over the Lyceum. Aristotle’s books were read and translated for centuries, and Arabic tradition called him “the First Teacher”.',
+        es: 'Murió en Calcis en el 322 a. C., a los sesenta y dos años, por una enfermedad del estómago. Su discípulo Teofrasto dirigió el Liceo. Los libros de Aristóteles se leyeron y tradujeron durante siglos, y la tradición árabe lo llamó «el Primer Maestro».',
+      },
+    },
+  ],
+  legacy: {
+    t: { ar: 'إرث ممتد لقرون', en: 'A legacy of centuries', es: 'Un legado de siglos' },
+    d: {
+    ar: 'ترجم علماء مسلمون كتبه وشرحوها، ومنهم الفارابي وابن سينا وابن رشد، ثم انتقلت أفكاره إلى أوروبا عبر هذه الترجمات. وما زال المنطق والأخلاق والأحياء تُدرَّس بمصطلحاته.',
+    en: 'Muslim scholars such as al-Farabi, Ibn Sina and Ibn Rushd translated and explained his books, and through them his ideas reached Europe. Logic, ethics and biology are still taught with his terms.',
+    es: 'Sabios musulmanes como al-Farabi, Avicena y Averroes tradujeron y comentaron sus libros, y por ellos sus ideas llegaron a Europa. La lógica, la ética y la biología se siguen enseñando con sus términos.',
+    },
+  },
+};
+
+/* ---- 30-art-core.js ---- */
+/* Illustration kit: palette, helpers, shared motifs, two base maps. Scenes live in 31-33. */
+const C = {
+  red: '#D32F2F', red2: '#E53935', dark: '#B71C1C', soft: '#F8D7D4', tint: '#FFF3F1',
+  ink: '#26222B', gray: '#8D8893', mist: '#D8D3DC', stone: '#EFE7DF', stone2: '#DACDBF',
+  skin: '#F2D6C1', skin2: '#E2B79A', sea: '#DCE9EF', land: '#F3EBE1', coast: '#CDBFAF',
+  sun: '#F0B445', olive: '#7D9460', olive2: '#9DB07F', white: '#FFFFFF'
+};
+const ART = {};
+let _uid = 0;
+const uid = p => p + (++_uid);
+const f1 = n => Math.round(n * 10) / 10;
+
+const svg = (inner, o = {}) =>
+  `<svg class="art" viewBox="0 0 320 176" style="direction:ltr" aria-hidden="true" focusable="false"><rect width="320" height="176" fill="${o.bg || C.tint}"/>${inner}</svg>`;
+
+const label = (x, y, s, o = {}) =>
+  `<text x="${x}" y="${y}" text-anchor="${o.a || 'middle'}" font-family="Amiri,'Times New Roman',serif" font-size="${o.s || 9}" font-weight="${o.w || 700}" letter-spacing="${o.ls == null ? 0.8 : o.ls}" fill="${o.c || C.ink}"${o.i ? ' font-style="italic"' : ''}>${s}</text>`;
+
+const ground = (y, c = C.stone) =>
+  `<rect y="${y}" width="320" height="${176 - y}" fill="${c}"/><rect y="${y}" width="320" height="1.5" fill="${C.stone2}"/>`;
+
+/* medallion with a bust inside; ring marks the person in focus */
+function bust(id, cx, cy, r, o = {}) {
+  const k = uid('bc'), s = r * 2;
+  return `<clipPath id="${k}"><circle cx="${cx}" cy="${cy}" r="${r}"/></clipPath>` +
+    `<circle cx="${cx}" cy="${cy}" r="${r + 3}" fill="${o.ring || C.white}"/>` +
+    `<circle cx="${cx}" cy="${cy}" r="${r}" fill="${o.bg || C.soft}"/>` +
+    `<g clip-path="url(#${k})"><svg x="${cx - r}" y="${cy - r}" width="${s}" height="${s}" viewBox="8 6 84 84"><use href="#av-${id}" width="100" height="100"/></svg></g>` +
+    `<circle cx="${cx}" cy="${cy}" r="${r + 1.5}" fill="none" stroke="${o.stroke || C.red}" stroke-width="${o.sw || 2.2}"/>`;
+}
+
+function temple(cx, base, w, h, n = 4) {
+  const pedH = h * 0.24, entH = h * 0.08, colH = h - pedH - entH, x0 = cx - w / 2, cw = 7;
+  let s = `<rect x="${f1(x0 - 8)}" y="${base}" width="${w + 16}" height="4" fill="${C.stone2}"/><rect x="${f1(x0 - 14)}" y="${base + 4}" width="${w + 28}" height="4" fill="${C.stone}"/>`;
+  for (let i = 0; i < n; i++) {
+    const x = x0 + i * (w - cw) / (n - 1);
+    s += `<rect x="${f1(x)}" y="${f1(base - colH)}" width="${cw}" height="${f1(colH)}" fill="${C.stone}"/><rect x="${f1(x + cw - 2)}" y="${f1(base - colH)}" width="2" height="${f1(colH)}" fill="${C.stone2}"/><rect x="${f1(x - 1)}" y="${f1(base - colH)}" width="${cw + 2}" height="2.5" fill="${C.stone2}"/>`;
+  }
+  const ty = base - colH - entH;
+  s += `<rect x="${f1(x0 - 4)}" y="${f1(ty)}" width="${w + 8}" height="${f1(entH)}" fill="${C.stone2}"/>`;
+  s += `<path d="M${f1(x0 - 6)} ${f1(ty)}L${cx} ${f1(ty - pedH)}L${f1(x0 + w + 6)} ${f1(ty)}Z" fill="${C.stone}"/>`;
+  s += `<path d="M${f1(x0 + 7)} ${f1(ty - 2)}L${cx} ${f1(ty - pedH + 8)}L${f1(x0 + w - 7)} ${f1(ty - 2)}Z" fill="${C.soft}"/>`;
+  return s;
+}
+
+/* standing person; (x,y) = feet. arms: [[dx,dy] left hand, [dx,dy] right hand] from the neck */
+function figure(x, y, o = {}) {
+  const s = o.s || 1, H = 62 * s, top = y - H, hy = top + 7 * s;
+  const robe = o.robe || C.red, dark = o.dark || C.dark, skin = o.skin || C.skin;
+  const arms = o.arms || [[-11, 40], [11, 40]];
+  const sh = [[x - 8 * s, top + 17 * s], [x + 8 * s, top + 17 * s]];
+  let g = '';
+  arms.forEach((a, i) => {
+    if (!a) return;
+    const hx = x + a[0] * s, hyy = top + a[1] * s;
+    g += `<path d="M${f1(sh[i][0])} ${f1(sh[i][1])}L${f1(hx)} ${f1(hyy)}" stroke="${robe}" stroke-width="${f1(5.5 * s)}" stroke-linecap="round"/><circle cx="${f1(hx)}" cy="${f1(hyy)}" r="${f1(2.6 * s)}" fill="${skin}"/>`;
+  });
+  g += `<path d="M${f1(x - 8 * s)} ${f1(top + 15 * s)}Q${x} ${f1(top + 12 * s)} ${f1(x + 8 * s)} ${f1(top + 15 * s)}L${f1(x + 12.5 * s)} ${y}H${f1(x - 12.5 * s)}Z" fill="${robe}"/>`;
+  g += `<path d="M${f1(x - 3 * s)} ${f1(top + 13 * s)}L${x} ${f1(top + 30 * s)}L${f1(x + 3 * s)} ${f1(top + 13 * s)}Z" fill="${dark}" opacity=".4"/>`;
+  g += `<path d="M${f1(x - 2 * s)} ${f1(top + 10 * s)}h${f1(4 * s)}v${f1(5 * s)}h${f1(-4 * s)}z" fill="${skin}"/>`;
+  g += `<circle cx="${x}" cy="${f1(hy)}" r="${f1(7 * s)}" fill="${skin}"/>`;
+  if (o.beard) g += `<path d="M${f1(x - 6.6 * s)} ${f1(hy + 1 * s)}Q${f1(x - 6 * s)} ${f1(hy + 11.5 * s)} ${x} ${f1(hy + 11.5 * s)}Q${f1(x + 6 * s)} ${f1(hy + 11.5 * s)} ${f1(x + 6.6 * s)} ${f1(hy + 1 * s)}Q${x} ${f1(hy + 5 * s)} ${f1(x - 6.6 * s)} ${f1(hy + 1 * s)}Z" fill="${o.beardC || C.mist}"/>`;
+  if (!o.bald) g += `<path d="M${f1(x - 7.2 * s)} ${f1(hy)}A${f1(7.2 * s)} ${f1(7.2 * s)} 0 0 1 ${f1(x + 7.2 * s)} ${f1(hy)}Q${x} ${f1(hy - 4.5 * s)} ${f1(x - 7.2 * s)} ${f1(hy)}Z" fill="${o.hair || C.ink}"/>`;
+  g += `<circle cx="${f1(x - 2.6 * s)}" cy="${f1(hy + 0.5 * s)}" r="${f1(0.9 * s)}" fill="${C.ink}"/><circle cx="${f1(x + 2.6 * s)}" cy="${f1(hy + 0.5 * s)}" r="${f1(0.9 * s)}" fill="${C.ink}"/>`;
+  return g;
+}
+
+function bubble(x, y, glyph, o = {}) {
+  const w = o.w || 26, h = o.h || 20, d = o.tail === 'r' ? 1 : -1, fill = o.fill || C.white, st = o.stroke || C.red;
+  const tx = x + d * (w / 2 - 9), by = y + h / 2;
+  return `<g><rect x="${x - w / 2}" y="${y - h / 2}" width="${w}" height="${h}" rx="${h / 2.4}" fill="${fill}" stroke="${st}" stroke-width="1.6"/>` +
+    `<path d="M${tx - 4} ${by - 1}L${tx + d * 3} ${by + 7}L${tx + 4} ${by - 1}Z" fill="${fill}" stroke="${st}" stroke-width="1.6" stroke-linejoin="round"/>` +
+    `<rect x="${tx - 3.2}" y="${by - 2.3}" width="6.4" height="3.4" fill="${fill}"/>` +
+    `<text x="${x}" y="${y + (o.fs || 14) * 0.36}" text-anchor="middle" font-family="Amiri,serif" font-weight="700" font-size="${o.fs || 14}" fill="${o.c || C.red}">${glyph}</text></g>`;
+}
+
+function cup(x, y, s = 1) {
+  return `<g transform="translate(${x} ${y}) scale(${s})"><path d="M-17 0h34c0 10-8 16-17 16s-17-6-17-16z" fill="${C.red}"/><path d="M-17 0h34" stroke="${C.dark}" stroke-width="2.4"/>` +
+    `<path d="M-17 2c-9-1-9 8-3 8M17 2c9-1 9 8 3 8" stroke="${C.red}" stroke-width="2.6" fill="none" stroke-linecap="round"/>` +
+    `<rect x="-2.2" y="15" width="4.4" height="9" fill="${C.dark}"/><ellipse cx="0" cy="25" rx="10" ry="2.6" fill="${C.dark}"/></g>`;
+}
+
+function ship(x, y, s = 1, sail = C.white) {
+  return `<g transform="translate(${x} ${y}) scale(${s})"><path d="M-34 0C-30 12-14 16 0 16s30-4 36-18c-4 3-6 4-9 4H-26c-3 0-6-1-8-2z" fill="${C.ink}"/>` +
+    `<path d="M36-2c3-4 4-8 3-13-3 3-6 6-9 9z" fill="${C.ink}"/><rect x="-1.5" y="-34" width="3" height="36" fill="${C.ink}"/>` +
+    `<path d="M-22-30h42c-1 14-1 22 0 28h-42c1-6 1-14 0-28z" fill="${sail}" stroke="${C.ink}" stroke-width="1.6"/><path d="M-22-18h42v7h-42z" fill="${C.red}"/>` +
+    `<path d="M-30 17q5 4 10 0t10 0 10 0 10 0 10 0 10 0" stroke="${C.red}" stroke-width="2" fill="none" opacity=".55"/></g>`;
+}
+
+function scroll(x, y, s = 1, rot = 0) {
+  return `<g transform="translate(${x} ${y}) rotate(${rot}) scale(${s})"><rect x="-20" y="-12" width="40" height="24" rx="2" fill="#FBF3E4" stroke="${C.stone2}" stroke-width="1.4"/>` +
+    `<rect x="-24" y="-14" width="7" height="28" rx="3.5" fill="${C.stone2}"/><rect x="17" y="-14" width="7" height="28" rx="3.5" fill="${C.stone2}"/>` +
+    `<path d="M-12-5h24M-12 0h24M-12 5h16" stroke="${C.red}" stroke-width="1.6" stroke-linecap="round"/></g>`;
+}
+
+function sun(x, y, r = 12, rays = true) {
+  let g = '';
+  if (rays) for (let i = 0; i < 12; i++) {
+    const a = i * Math.PI / 6;
+    g += `<path d="M${f1(x + Math.cos(a) * (r + 4))} ${f1(y + Math.sin(a) * (r + 4))}L${f1(x + Math.cos(a) * (r + 9))} ${f1(y + Math.sin(a) * (r + 9))}" stroke="${C.sun}" stroke-width="2.4" stroke-linecap="round"/>`;
+  }
+  return g + `<circle cx="${x}" cy="${y}" r="${r}" fill="${C.sun}"/>`;
+}
+
+function olive(x, y, s = 1) {
+  return `<g transform="translate(${x} ${y}) scale(${s})"><path d="M-3 0C-2-12-5-20-9-28M3 0c-1-12 2-20 7-27M0 0v-16" stroke="#6B5B4E" stroke-width="5" stroke-linecap="round" fill="none"/>` +
+    `<ellipse cx="-10" cy="-34" rx="15" ry="9" fill="${C.olive}"/><ellipse cx="9" cy="-36" rx="16" ry="9.5" fill="${C.olive2}"/><ellipse cx="0" cy="-42" rx="14" ry="8" fill="${C.olive}"/></g>`;
+}
+
+function owl(x, y, s = 1) {
+  return `<g transform="translate(${x} ${y}) scale(${s})"><path d="M-13-26l5 7h16l5-7v22c0 9-6 15-13 15s-13-6-13-15z" fill="${C.ink}"/>` +
+    `<ellipse cx="0" cy="-2" rx="8" ry="10" fill="${C.stone}"/><circle cx="-6" cy="-17" r="6" fill="${C.white}"/><circle cx="6" cy="-17" r="6" fill="${C.white}"/>` +
+    `<circle cx="-6" cy="-17" r="2.6" fill="${C.ink}"/><circle cx="6" cy="-17" r="2.6" fill="${C.ink}"/><path d="M-2.500-13h5l-2.500 5z" fill="${C.sun}"/></g>`;
+}
+
+function scales(x, y, s = 1, tilt = 0) {
+  return `<g transform="translate(${x} ${y}) scale(${s})"><rect x="-1.5" y="-36" width="3" height="42" fill="${C.ink}"/><rect x="-14" y="5" width="28" height="4" rx="2" fill="${C.ink}"/>` +
+    `<g transform="rotate(${tilt} 0 -34)"><rect x="-34" y="-36" width="68" height="3" rx="1.5" fill="${C.ink}"/>` +
+    `<path d="M-30-33l-9 24h18zM30-33l-9 24h18z" fill="none" stroke="${C.gray}" stroke-width="1.2"/>` +
+    `<path d="M-41-9h22c0 6-5 9-11 9s-11-3-11-9zM19-9h22c0 6-5 9-11 9s-11-3-11-9z" fill="${C.red}"/></g></g>`;
+}
+
+function helmet(x, y, s = 1) {
+  return `<g transform="translate(${x} ${y}) scale(${s})"><path d="M-14-6c0-14 8-20 14-20s14 6 14 20v22c0 4-3 6-6 6h-4v-12h-8v12h-4c-3 0-6-2-6-6z" fill="#C9A15B"/>` +
+    `<path d="M-14-6h28" stroke="#9B7A3E" stroke-width="2"/><path d="M-6-8h12v6h-12z" fill="${C.ink}"/><path d="M-3-26c0-8 10-12 16-8-3 3-8 5-8 10z" fill="${C.red}"/></g>`;
+}
+
+function shield(x, y, r = 22) {
+  return `<circle cx="${x}" cy="${y}" r="${r}" fill="${C.red}" stroke="${C.dark}" stroke-width="3"/><circle cx="${x}" cy="${y}" r="${f1(r * 0.66)}" fill="none" stroke="${C.soft}" stroke-width="2"/>` +
+    `<circle cx="${x}" cy="${y}" r="${f1(r * 0.22)}" fill="${C.dark}"/>`;
+}
+
+/* ---- maps: lon/lat -> canvas, rough but recognisable coastlines ---- */
+const MAPS = {
+  aegean: { x: lon => (lon - 21) * 44, y: lat => (41.1 - lat) * 50 },
+  med: { x: lon => (lon - 8.5) * 12.6, y: lat => (42.3 - lat) * 13.3 }
+};
+const pt = (m, lon, lat) => [f1(MAPS[m].x(lon)), f1(MAPS[m].y(lat))];
+const mpath = (m, pts) => 'M' + pts.map(p => pt(m, p[0], p[1]).join(' ')).join('L') + 'Z';
+const landShape = (m, pts) => `<path d="${mpath(m, pts)}" fill="${C.land}" stroke="${C.coast}" stroke-width="1.2" stroke-linejoin="round"/>`;
+
+function mapAegean() {
+  const L = [[21, 37.6], [21, 41.4], [28.3, 41.4], [28.3, 37.6], [26.9, 37.6], [26.75, 37.95], [26.3, 38.2], [26.55, 38.38], [26.95, 38.45], [27.15, 38.5], [26.85, 38.75], [26.95, 38.95], [26.88, 39.1], [26.7, 39.3], [26.95, 39.4], [27.05, 39.55], [26.7, 39.55], [26.34, 39.49], [26.07, 39.48], [26.15, 39.9], [26.17, 40.04], [26.3, 40.35], [26.55, 40.5], [26.2, 40.62], [25.87, 40.85], [25.2, 40.95], [24.4, 40.94], [23.85, 40.78], [23.95, 40.45], [24.33, 40.15], [23.95, 40.25], [23.95, 39.98], [23.6, 40.18], [23.35, 39.95], [23.2, 40.3], [22.95, 40.65], [22.6, 40.2], [22.62, 39.85], [22.9, 39.35], [23.2, 39.25], [22.75, 38.9], [23.3, 38.6], [23.55, 38.5], [23.9, 38.25], [24.02, 37.95], [24.02, 37.68], [23.6, 37.92], [23.0, 37.9], [22.9, 37.6]];
+  const I = [
+    [[23.15, 39.05], [23.4, 38.95], [23.8, 38.55], [24.2, 38.15], [24.6, 37.95], [24.55, 37.85], [24.2, 38.0], [23.75, 38.35], [23.55, 38.5], [23.3, 38.8]],
+    [[25.85, 39.3], [26.1, 39.38], [26.45, 39.35], [26.6, 39.15], [26.4, 39.05], [26.0, 39.1]],
+    [[24.9, 39.95], [25.2, 40.0], [25.3, 39.85], [25.0, 39.8]],
+    [[24.55, 40.7], [24.75, 40.78], [24.8, 40.6], [24.6, 40.6]],
+    [[25.95, 38.55], [26.05, 38.55], [26.15, 38.3], [26.05, 38.2], [25.95, 38.3]],
+    [[24.45, 38.95], [24.65, 38.92], [24.6, 38.82], [24.45, 38.85]]
+  ];
+  return `<rect width="320" height="176" fill="${C.sea}"/>` + label(236, 112, 'ΑΙΓΑΙΟΝ', { s: 10, c: '#9FB6C2', ls: 3, i: 1, w: 400 }) +
+    landShape('aegean', L) + I.map(p => landShape('aegean', p)).join('');
+}
+
+function mapMed() {
+  const N = [[18.5, 42.4], [33.9, 42.4], [33.9, 36.0], [32.0, 36.2], [30.7, 36.9], [30.0, 36.2], [29.1, 36.5], [28.0, 36.7], [27.5, 37.0], [27.2, 37.9], [26.9, 38.6], [26.1, 39.5], [26.2, 40.05], [25.8, 40.85], [24.4, 40.9], [23.9, 40.1], [23.0, 40.6], [22.7, 40.0], [23.0, 39.3], [23.7, 38.3], [24.0, 37.65], [23.2, 37.95], [22.8, 37.5], [23.1, 36.8], [23.2, 36.45], [22.5, 36.4], [22.1, 36.9], [21.7, 36.8], [21.1, 37.5], [21.75, 38.25], [20.9, 38.9], [20.3, 39.5], [19.5, 40.4], [19.4, 41.4], [18.8, 42.0]];
+  const IT = [[10.5, 42.4], [14.2, 42.4], [15.0, 41.9], [16.2, 41.9], [16.9, 41.2], [18.4, 40.3], [18.35, 39.8], [17.3, 40.4], [16.7, 39.9], [16.6, 39.3], [17.1, 39.0], [16.6, 38.4], [16.05, 37.95], [15.7, 38.0], [15.8, 38.5], [16.2, 39.0], [15.7, 39.9], [15.0, 40.3], [14.7, 40.65], [14.2, 40.8], [13.5, 41.2], [12.4, 41.7], [11.1, 42.4]];
+  const SI = [[12.45, 38.1], [13.4, 38.2], [14.5, 38.05], [15.65, 38.28], [15.5, 37.5], [15.1, 36.7], [14.3, 36.8], [13.3, 37.5], [12.5, 37.65]];
+  const CR = [[23.5, 35.35], [24.4, 35.5], [25.4, 35.35], [26.3, 35.3], [26.2, 35.0], [25.0, 35.0], [24.0, 35.1]];
+  const AF = [[8.5, 36.9], [9.9, 37.3], [11.0, 37.05], [11.1, 36.5], [10.5, 35.8], [10.8, 34.7], [10.1, 33.9], [11.5, 33.2], [13.2, 32.9], [15.1, 32.4], [16.6, 31.2], [18.5, 30.5], [19.9, 30.8], [20.1, 32.1], [21.9, 33.0], [22.65, 32.8], [23.97, 32.08], [25.15, 31.57], [27.2, 31.35], [29.9, 31.2], [31.5, 31.55], [32.3, 31.2], [33.9, 31.0], [33.9, 29.0], [8.5, 29.0]];
+  return `<rect width="320" height="176" fill="${C.sea}"/>` + label(150, 105, 'ΜΕΣΟΓΕΙΟΣ', { s: 9, c: '#9FB6C2', ls: 3, i: 1, w: 400 }) +
+    [N, IT, SI, CR, AF].map(p => landShape('med', p)).join('');
+}
+
+/* red pin with a small Greek caption; dir: 'u' caption above, 'd' below, 'l'/'r' beside */
+function pin(m, lon, lat, text, o = {}) {
+  const [x, y] = pt(m, lon, lat), d = o.d || 'u';
+  const tx = d === 'l' ? x - 7 : d === 'r' ? x + 7 : x, ty = d === 'u' ? y - 8 : d === 'd' ? y + 14 : y + 3;
+  return `<circle cx="${x}" cy="${y}" r="${o.r || 4.2}" fill="${o.c || C.red}" stroke="${C.white}" stroke-width="1.6"/>` +
+    (text ? label(tx, ty, text, { a: d === 'l' ? 'end' : d === 'r' ? 'start' : 'middle', s: o.s || 8.5, c: C.ink }) : '');
+}
+
+/* dashed route through lon/lat points with an arrowhead at the end */
+function route(m, pts, o = {}) {
+  const p = pts.map(q => pt(m, q[0], q[1]));
+  const d = 'M' + p.map(q => q.join(' ')).join('L');
+  const [a, b] = [p[p.length - 2], p[p.length - 1]], ang = Math.atan2(b[1] - a[1], b[0] - a[0]);
+  const hx = x => f1(b[0] + x[0] * Math.cos(ang) - x[1] * Math.sin(ang)), hy = x => f1(b[1] + x[0] * Math.sin(ang) + x[1] * Math.cos(ang));
+  return `<path d="${d}" fill="none" stroke="${o.c || C.red}" stroke-width="${o.w || 2}" stroke-dasharray="${o.dash || '5 4'}" stroke-linecap="round" stroke-linejoin="round"/>` +
+    `<path d="M${hx([0, 0])} ${hy([0, 0])}L${hx([-8, -4.5])} ${hy([-8, -4.5])}L${hx([-8, 4.5])} ${hy([-8, 4.5])}Z" fill="${o.c || C.red}"/>`;
+}
+
+/* teacher-to-student chain; `active` is the philosopher whose card this is */
+const CHAIN = [
+  ['socrates', 'c470-399', { ar: 'سقراط', en: 'Socrates', es: 'Sócrates' }],
+  ['plato', 'c428-348', { ar: 'أفلاطون', en: 'Plato', es: 'Platón' }],
+  ['aristotle', '384-322', { ar: 'أرسطو', en: 'Aristotle', es: 'Aristóteles' }],
+  ['alexander', '356-323', { ar: 'الإسكندر', en: 'Alexander', es: 'Alejandro' }]
+];
+ART.lineage = function (active) {
+  const rtl = LANGS[lang].dir === 'rtl', d = rtl ? -1 : 1;
+  const xs = rtl ? [286, 206, 126, 46] : [46, 126, 206, 286];
+  let g = '';
+  CHAIN.forEach((c, i) => {
+    const on = c[0] === active, x = xs[i];
+    g += bust(c[0], x, 66, on ? 29 : 24, { stroke: on ? C.red : C.mist, sw: on ? 3 : 1.6, bg: on ? C.soft : C.stone });
+    g += label(x, 115, tx(c[2]), { s: 13, w: 700, ls: 0, c: on ? C.red : C.ink });
+    g += label(x, 130, fmtYear(c[1]), { s: 9, w: 700, ls: 0, c: C.gray });
+    if (i < 3) {
+      const a = x + d * 34, b = x + d * 76;
+      g += `<path d="M${a} 66H${a + d * 34}" stroke="${C.red}" stroke-width="2" stroke-dasharray="4 3"/>` +
+           `<path d="M${b} 66l${-8 * d} -4.5v9z" fill="${C.red}"/>`;
+    }
+  });
+  return svg(g);
+};
+
+/* ---- 31-art-socrates.js ---- */
+/* Scenes for Socrates */
+
+ART.soc_birth = () => svg(
+  `<path d="M12 150L76 102H244L308 150Z" fill="${C.stone2}"/><path d="M12 150L76 102H98L38 150Z" fill="${C.stone}" opacity=".8"/>` +
+  temple(160, 102, 112, 56, 6) + ground(150) +
+  olive(34, 152, .8) + olive(66, 153, .6) + olive(292, 152, .7) +
+  owl(256, 153, 1.15) + label(160, 168, 'ΑΘΗΝΑΙ', { s: 10, c: C.red, ls: 3 })
+);
+
+ART.soc_craft = () => svg(
+  `<g opacity=".85">${temple(78, 92, 80, 42, 5)}</g>` + ground(146) +
+  `<path d="M190 146V104h62v42z" fill="${C.stone}" stroke="${C.stone2}" stroke-width="2"/><path d="M190 104l12-10h62l-12 10z" fill="#FAF5EE" stroke="${C.stone2}" stroke-width="2"/><path d="M252 104l12-10v42l-12 10z" fill="${C.stone2}"/>` +
+  `<path d="M206 120l8-5 10 7-8 5z" fill="${C.stone2}"/>` +
+  figure(140, 150, { s: 1, hair: '#4A362E', arms: [[27, 38], [30, 16]] }) +
+  `<path d="M168 122l22-10" stroke="${C.ink}" stroke-width="3.2" stroke-linecap="round"/><path d="M192 111l8-3.500" stroke="${C.gray}" stroke-width="3" stroke-linecap="round"/>` +
+  `<path d="M171 100l14-12" stroke="#6B5B4E" stroke-width="3" stroke-linecap="round"/><rect x="178" y="78" width="16" height="10" rx="2" transform="rotate(-38 186 83)" fill="${C.red}"/>` +
+  `<circle cx="206" cy="108" r="1.6" fill="${C.stone2}"/><circle cx="214" cy="104" r="1.2" fill="${C.stone2}"/><circle cx="198" cy="100" r="1.2" fill="${C.stone2}"/>` +
+  bubble(110, 30, '?', { tail: 'r', fs: 15 })
+);
+
+ART.soc_war = () => svg(
+  mapAegean() +
+  route('aegean', [[23.73, 37.98], [23.55, 38.33]], { w: 1.4, dash: '3 3' }) +
+  pin('aegean', 23.73, 37.98, 'ΑΘΗΝΑΙ', { d: 'd', s: 8 }) +
+  pin('aegean', 23.55, 38.33, 'ΔΗΛΙΟΝ 424', { d: 'l', s: 8 }) +
+  pin('aegean', 23.32, 40.19, 'ΠΟΤΙΔΑΙΑ 432', { d: 'l', s: 8 }) +
+  pin('aegean', 23.84, 40.82, 'ΑΜΦΙΠΟΛΙΣ 422', { d: 'r', s: 8 }) +
+  shield(272, 112, 22) + helmet(285, 54, 1.25)
+);
+
+ART.soc_delphi = () => svg(
+  `<path d="M0 132L58 66l44 40 42-34 52 56 36-30 88 54z" fill="${C.soft}"/><path d="M0 132L58 66l28 26-56 40z" fill="#F2C3BE" opacity=".6"/>` +
+  temple(168, 128, 124, 64, 6) + ground(136) +
+  `<rect x="118" y="141" width="100" height="22" rx="3" fill="${C.white}" stroke="${C.stone2}" stroke-width="1.5"/>` +
+  label(168, 156, 'ΓΝΩΘΙ ΣΕΑΥΤΟΝ', { s: 10.5, c: C.red, ls: 1.4 }) +
+  `<path d="M50 104c-7-8 6-13 0-22s6-13 2-22" stroke="${C.mist}" stroke-width="4.5" fill="none" stroke-linecap="round" opacity=".9"/>` +
+  `<path d="M32 108h36c0 10-8 15-18 15s-18-5-18-15z" fill="#C9A15B"/><path d="M32 108h36" stroke="#9B7A3E" stroke-width="2.4"/><path d="M38 121l-9 27M50 123v25M62 121l9 27" stroke="#9B7A3E" stroke-width="3.2" stroke-linecap="round"/>` +
+  `<path d="M268 150c4-12 6-22 14-32" stroke="#6B5B4E" stroke-width="2" fill="none"/>` +
+  [[270, 142, -30], [274, 134, 20], [278, 126, -25], [283, 120, 25], [286, 116, -10]].map(l => `<ellipse cx="${l[0]}" cy="${l[1]}" rx="7.500" ry="3.200" transform="rotate(${l[2]} ${l[0]} ${l[1]})" fill="${C.olive}"/>`).join('')
+);
+
+ART.soc_agora = () => svg(
+  `<rect y="48" width="320" height="8" fill="${C.stone2}"/>` +
+  [26, 86, 146, 206, 266].map(x => `<rect x="${x - 6}" y="56" width="12" height="74" fill="${C.stone}"/><rect x="${x + 2}" y="56" width="4" height="74" fill="${C.stone2}"/>`).join('') +
+  ground(130) +
+  figure(100, 156, { s: 1.08, bald: true, beard: true, arms: [[-11, 40], [24, 24]] }) +
+  figure(206, 156, { s: 1, robe: '#4A4552', dark: '#2E2A35', hair: '#4A362E', arms: [[-24, 28], [11, 40]] }) +
+  figure(274, 156, { s: .9, robe: '#8E5A4A', dark: '#6B3E32', hair: '#6B4A2F', arms: [[-11, 40], [11, 40]] }) +
+  bubble(142, 34, '?', { tail: 'l', fs: 16 }) +
+  bubble(194, 34, '!', { tail: 'r', fs: 16, stroke: C.ink, c: C.ink }) +
+  bubble(262, 40, '…', { tail: 'r', fs: 16, stroke: C.gray, c: C.gray, w: 30 })
+);
+
+ART.soc_refuse = () => svg(
+  ground(148) +
+  scroll(78, 90, 1.7, -6) +
+  `<path d="M50 62l54 56M104 62l-54 56" stroke="${C.red}" stroke-width="9" stroke-linecap="round"/>` +
+  figure(186, 152, { s: 1.08, bald: true, beard: true, arms: [[-12, 40], [20, 8]] }) +
+  `<path d="M292 34V152" stroke="${C.ink}" stroke-width="3"/><path d="M292 24l-5 13h10z" fill="${C.ink}"/>` +
+  helmet(262, 120, 1.55)
+);
+
+ART.soc_trial = () => {
+  const b = (x, h, c) => `<rect x="${x}" y="${150 - h}" width="40" height="${h}" rx="3" fill="${c}"/>`;
+  return svg(
+    ground(150) +
+    scales(70, 140, 1.5, -6) +
+    b(172, 84, C.red) + b(232, 66, C.gray) +
+    label(192, 150 - 84 - 7, '≈280', { s: 14, c: C.red, ls: 0 }) +
+    label(252, 150 - 66 - 7, '≈220', { s: 14, c: C.gray, ls: 0 }) +
+    label(192, 166, 'ΕΝΟΧΟΣ', { s: 8, c: C.red, ls: 1 }) + label(252, 166, 'ΑΘΩΟΣ', { s: 8, c: C.gray, ls: 1 }) +
+    label(226, 22, '501', { s: 18, c: C.ink, ls: 1 }) + `<path d="M178 30h96" stroke="${C.stone2}" stroke-width="1.5"/>`
+  );
+};
+
+ART.soc_hemlock = () => svg(
+  `<rect y="96" width="320" height="30" fill="${C.sea}"/>` +
+  `<path d="M24 96a40 40 0 0 1 80 0z" fill="${C.sun}"/><path d="M0 108h320M20 116h280" stroke="${C.white}" stroke-width="2" opacity=".6"/>` +
+  `<g transform="translate(176 100) scale(.5)"><path d="M-34 0C-30 12-14 16 0 16s30-4 36-18c-4 3-6 4-9 4H-26c-3 0-6-1-8-2z" fill="${C.ink}"/><rect x="-1.500" y="-34" width="3" height="36" fill="${C.ink}"/><path d="M-22-30h42c-1 14-1 22 0 28h-42c1-6 1-14 0-28z" fill="${C.ink}"/></g>` +
+  ground(126) +
+  figure(130, 156, { s: 1.08, bald: true, beard: true, arms: [[-11, 40], [26, 36]] }) +
+  figure(66, 158, { s: .86, robe: '#4A4552', dark: '#2E2A35', hair: '#4A362E', arms: [[-11, 40], [11, 40]] }) +
+  figure(30, 160, { s: .8, robe: '#4A4552', dark: '#2E2A35', hair: '#6B4A2F', arms: [[-11, 40], [11, 40]] }) +
+  `<rect x="204" y="128" width="46" height="28" rx="3" fill="${C.stone}" stroke="${C.stone2}" stroke-width="2"/>` +
+  cup(227, 112, 1.35) +
+  `<path d="M286 156c-1-18 1-34 0-50" stroke="${C.olive}" stroke-width="2.600" fill="none"/>` +
+  [[286, 98], [275, 104], [297, 104], [280, 112], [292, 112]].map(c => `<circle cx="${c[0]}" cy="${c[1]}" r="4.500" fill="${C.white}" stroke="${C.olive2}" stroke-width="1.2"/>`).join('')
+);
+
+/* ---- 32-art-plato.js ---- */
+/* Scenes for Plato, part 1 */
+
+ART.pla_birth = () => svg(
+  ground(150) + olive(296, 152, .75) + olive(18, 152, .6) +
+  bust('plato', 76, 70, 38) +
+  `<path d="M40 124H112" stroke="${C.red}" stroke-width="2.4" stroke-linecap="round"/><path d="M40 124l9-5.5v11zM112 124l-9-5.5v11z" fill="${C.red}"/>` +
+  label(76, 144, 'ΠΛΑΤΥΣ', { s: 10, c: C.red, ls: 2 }) +
+  `<rect x="152" y="30" width="116" height="30" rx="5" fill="${C.white}" stroke="${C.mist}" stroke-width="1.6"/>` +
+  label(210, 50, 'ΑΡΙΣΤΟΚΛΗΣ', { s: 11, c: C.gray, ls: 1 }) +
+  `<path d="M210 66v20M204 80l6 8 6-8" stroke="${C.ink}" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>` +
+  `<rect x="152" y="94" width="116" height="34" rx="5" fill="${C.red}"/>` +
+  label(210, 116, 'ΠΛΑΤΩΝ', { s: 15, c: C.white, ls: 2 })
+);
+
+ART.pla_youth = () => {
+  const limb = (d, c, w = 9) => `<path d="${d}" stroke="${c}" stroke-width="${w}" stroke-linecap="round" stroke-linejoin="round" fill="none"/>`;
+  const A = C.red, B = '#4A4552';
+  let wreath = '';
+  for (let i = 0; i < 14; i++) {
+    const a = i * Math.PI * 2 / 14, x = 272 + Math.cos(a) * 19, y = 52 + Math.sin(a) * 19;
+    wreath += `<ellipse cx="${f1(x)}" cy="${f1(y)}" rx="7" ry="3.2" transform="rotate(${f1(a * 180 / Math.PI + 90)} ${f1(x)} ${f1(y)})" fill="${i % 2 ? C.olive : C.olive2}"/>`;
+  }
+  return svg(
+    ground(146) + `<ellipse cx="160" cy="148" rx="86" ry="9" fill="${C.stone2}"/>` +
+    limb('M128 122L112 148M128 122L142 148', A) + limb('M192 122L208 148M192 122L178 148', B) +
+    limb('M148 94L128 122', A, 13) + limb('M172 94L192 122', B, 13) +
+    limb('M148 99L176 101', A, 7) + limb('M172 99L144 101', B, 7) +
+    `<circle cx="146" cy="82" r="9" fill="${C.skin}"/><path d="M137 81a9 9 0 0 1 18 0q-9-4-18 0z" fill="#4A362E"/>` +
+    `<circle cx="176" cy="82" r="9" fill="${C.skin}"/><path d="M167 81a9 9 0 0 1 18 0q-9-4-18 0z" fill="#6B4A2F"/>` +
+    scroll(50, 56, 1.15, -8) + wreath +
+    label(272, 90, 'ΙΣΘΜΙΑ', { s: 8, c: C.gray, ls: 1.5 }) + label(50, 88, 'ΠΟΙΗΣΙΣ', { s: 8, c: C.gray, ls: 1.5 })
+  );
+};
+
+ART.pla_meet = () => svg(
+  ground(150) +
+  bust('socrates', 72, 76, 36) + bust('plato', 248, 76, 36) +
+  label(72, 130, 'ΣΩΚΡΑΤΗΣ', { s: 10, c: C.ink, ls: 1.5 }) + label(248, 130, 'ΠΛΑΤΩΝ', { s: 10, c: C.red, ls: 1.5 }) +
+  bubble(132, 46, '?', { tail: 'l', fs: 16 }) + bubble(188, 62, '!', { tail: 'r', fs: 16, stroke: C.ink, c: C.ink }) +
+  scroll(160, 150, .8, -6) +
+  `<path d="M160 138c-9-6-5-14-1-21 2 5 11 8 9 18-1 5-4 8-8 8s-5-1-5-3z" fill="${C.red}"/><path d="M160 136c-4-3-2-7 0-10 1 3 5 5 4 9-1 2-3 3-4 1z" fill="${C.sun}"/>`
+);
+
+ART.pla_travel = () => svg(
+  mapMed() +
+  route('med', [[23.7, 38.0], [21.9, 32.8], [31.2, 30.4], [17.2, 40.5], [15.3, 37.1]], { w: 1.8 }) +
+  pin('med', 23.7, 38.0, 'ΑΘΗΝΑΙ', { d: 'r', s: 8 }) +
+  pin('med', 21.9, 32.8, 'ΚΥΡΗΝΗ', { d: 'd', s: 8 }) +
+  pin('med', 31.2, 30.4, 'ΑΙΓΥΠΤΟΣ', { d: 'l', s: 8 }) +
+  pin('med', 17.2, 40.5, 'ΤΑΡΑΣ', { d: 'r', s: 8 }) +
+  pin('med', 15.3, 37.1, 'ΣΥΡΑΚΟΥΣΑΙ', { d: 'd', s: 8 }) +
+  bust('plato', 34, 36, 21)
+);
+
+/* ---- 32b-art-plato.js ---- */
+/* Scenes for Plato, part 2 */
+
+ART.pla_academy = () => svg(
+  `<path d="M0 118L64 74l52 36 46-40 60 44 42-26 56 30z" fill="${C.soft}" opacity=".7"/>` +
+  temple(160, 116, 112, 60, 4) +
+  `<path d="M150 70l10-17 10 17z" fill="none" stroke="${C.red}" stroke-width="1.8" stroke-linejoin="round"/><circle cx="160" cy="63" r="3" fill="none" stroke="${C.red}" stroke-width="1.4"/>` +
+  ground(124) + olive(30, 128, .95) + olive(66, 130, .7) + olive(256, 130, .7) + olive(292, 128, .95) +
+  `<circle cx="160" cy="146" r="14" fill="none" stroke="${C.red}" stroke-width="2"/><path d="M160 132l12.1 21h-24.2z" fill="none" stroke="${C.red}" stroke-width="2" stroke-linejoin="round"/>` +
+  label(160, 170, 'ΑΚΑΔΗΜΙΑ', { s: 10, c: C.red, ls: 3 })
+);
+
+ART.pla_cave = () => {
+  const dark = '#3B3541', wall = '#554D5E';
+  const pris = x => `<circle cx="${x}" cy="128" r="5.5" fill="${C.mist}"/><path d="M${x - 8} 150q0-17 8-17t8 17z" fill="${C.gray}"/><path d="M${x - 8} 150h16" stroke="${C.ink}" stroke-width="2"/>`;
+  return svg(
+    `<rect width="320" height="176" fill="#FCE9E6"/>` + sun(284, 34, 13) +
+    `<path d="M200 176V120q40-6 120-70V176z" fill="${C.olive2}" opacity=".55"/>` +
+    `<path d="M0 176V30h210q22 0 28 30l-18 22V176z" fill="${dark}"/>` +
+    `<path d="M10 44h108v70H10z" fill="${wall}"/>` +
+    `<path d="M26 98q4-14 10-14t4 14zM56 98q3-26 9-26t5 26zM84 98l8-18 8 18z" fill="#2A252F"/><circle cx="31" cy="78" r="5" fill="#2A252F"/><circle cx="62" cy="64" r="5" fill="#2A252F"/>` +
+    label(64, 110, 'ΣΚΙΑΙ', { s: 8, c: C.mist, ls: 2 }) +
+    pris(34) + pris(62) + pris(90) + `<path d="M34 134H90" stroke="${C.gray}" stroke-width="1.6" stroke-dasharray="2 2"/>` +
+    `<rect x="116" y="104" width="56" height="8" rx="2" fill="${C.stone2}"/><circle cx="130" cy="98" r="3.6" fill="${C.red}"/><path d="M126 104v-6h8v6zM146 104l3-9 3 9zM160 104v-8h7v8z" fill="${C.red}"/>` +
+    `<path d="M144 150c-10-6-8-16-2-22 1 5 5 5 6 2 6 6 8 14 5 20z" fill="${C.red}"/><path d="M144 150c-5-3-4-8-1-11 1 3 4 3 4 0 3 4 3 8 1 11z" fill="${C.sun}"/>` +
+    `<path d="M176 150C206 150 214 112 252 78" stroke="${C.sun}" stroke-width="2.6" stroke-dasharray="5 4" fill="none" stroke-linecap="round"/><path d="M256 74l-12 3 6 9z" fill="${C.sun}"/>` +
+    olive(298, 158, .8)
+  );
+};
+
+ART.pla_syracuse = () => svg(
+  `<rect y="108" width="320" height="68" fill="${C.sea}"/><path d="M0 124q20 5 40 0t40 0 40 0 40 0 40 0 40 0 40 0M0 146q20 5 40 0t40 0 40 0 40 0 40 0 40 0 40 0" stroke="${C.white}" stroke-width="2" fill="none" opacity=".7"/>` +
+  ship(88, 96, 1.3) +
+  `<rect x="30" y="38" width="38" height="18" rx="9" fill="${C.red}"/>` + label(49, 51, '367', { s: 12, c: C.white, ls: 1 }) +
+  `<rect x="76" y="14" width="38" height="18" rx="9" fill="${C.white}" stroke="${C.red}" stroke-width="1.6"/>` + label(95, 27, '361', { s: 12, c: C.red, ls: 1 }) +
+  `<g transform="translate(240 80)"><path d="M-30 20L-34-20-14-2 0-30 14-2 34-20 30 20z" fill="${C.sun}" stroke="#C98F1E" stroke-width="2" stroke-linejoin="round"/><rect x="-30" y="20" width="60" height="9" rx="2" fill="#C98F1E"/><circle cx="-34" cy="-22" r="3.5" fill="${C.red}"/><circle cx="0" cy="-32" r="3.5" fill="${C.red}"/><circle cx="34" cy="-22" r="3.5" fill="${C.red}"/></g>` +
+  scroll(240, 140, 1.1, -6) + label(160, 170, 'ΣΥΡΑΚΟΥΣΑΙ', { s: 9, c: C.gray, ls: 3 })
+);
+
+ART.pla_death = () => svg(
+  `<rect width="320" height="176" fill="#FDEDEA"/>` +
+  `<path d="M0 118a160 38 0 0 1 320 0z" fill="#F6C9C2"/>` +
+  `<path d="M104 118a56 56 0 0 1 112 0z" fill="${C.sun}"/><path d="M122 118a38 38 0 0 1 76 0z" fill="#F7CD78"/>` +
+  ground(118, C.stone) + olive(30, 128, 1) + olive(70, 130, .72) + olive(250, 130, .72) + olive(292, 128, 1) +
+  `<path d="M146 152V104q0-12 14-12t14 12v48z" fill="${C.white}" stroke="${C.stone2}" stroke-width="2"/><rect x="138" y="150" width="44" height="8" rx="2" fill="${C.stone2}"/>` +
+  `<path d="M160 112c-9 0-14 6-14 14M160 112c9 0 14 6 14 14" stroke="${C.olive}" stroke-width="3" fill="none" stroke-linecap="round"/>` +
+  `<path d="M150 126h20M150 134h14" stroke="${C.red}" stroke-width="2" stroke-linecap="round"/>` +
+  scroll(222, 158, .7, 6) + label(160, 172, '348 / 347', { s: 9, c: C.gray, ls: 2 })
+);
+
+/* ---- 33-art-aristotle.js ---- */
+/* Scenes for Aristotle, part 1 */
+
+ART.ari_birth = () => {
+  const house = (x, y, w, h) => `<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="${C.white}" stroke="${C.stone2}" stroke-width="1.4"/><path d="M${x - 3} ${y}L${x + w / 2} ${y - 11}L${x + w + 3} ${y}Z" fill="${C.red}"/><rect x="${x + w / 2 - 3}" y="${y + h - 11}" width="6" height="11" fill="${C.stone2}"/>`;
+  return svg(
+    `<rect y="112" width="320" height="64" fill="${C.sea}"/>` +
+    `<path d="M0 128q20 5 40 0t40 0 40 0 40 0 40 0 40 0 40 0 40 0M0 152q20 5 40 0t40 0 40 0 40 0 40 0 40 0 40 0 40 0" stroke="${C.white}" stroke-width="2" fill="none" opacity=".7"/>` +
+    `<path d="M0 114Q40 58 110 54Q180 52 220 114Z" fill="${C.land}" stroke="${C.coast}" stroke-width="1.4"/>` +
+    house(58, 90, 24, 20) + house(92, 80, 26, 22) + house(128, 72, 28, 24) + house(164, 86, 24, 20) +
+    olive(30, 114, .5) + olive(206, 114, .45) +
+    label(110, 142, 'ΣΤΑΓΕΙΡΑ', { s: 10, c: C.ink, ls: 3 }) +
+    `<g transform="translate(272 98)"><rect x="-3" y="-66" width="6" height="132" rx="3" fill="#6B5B4E"/>` +
+    `<path d="M0 44C26 38 26 24 0 18S-26 0 0 -6 26-24 0-30" stroke="${C.red}" stroke-width="5.5" fill="none" stroke-linecap="round"/>` +
+    `<ellipse cx="3" cy="-35" rx="6.5" ry="4.5" fill="${C.red}"/><circle cx="5" cy="-36" r="1.3" fill="${C.white}"/></g>`
+  );
+};
+
+ART.ari_academy = () => svg(
+  `<rect y="52" width="320" height="8" fill="${C.stone2}"/>` +
+  [40, 120, 200, 280].map(x => `<rect x="${x - 6}" y="60" width="12" height="70" fill="${C.stone}"/><rect x="${x + 2}" y="60" width="4" height="70" fill="${C.stone2}"/>`).join('') +
+  ground(130) +
+  figure(100, 160, { s: 1.1, beard: true, hair: '#8D8893', arms: [[-11, 40], [12, -18]] }) +
+  figure(220, 160, { s: 1.1, beard: true, hair: '#4A362E', beardC: '#5B463C', robe: '#4A4552', dark: '#2E2A35', arms: [[-28, 24], [11, 40]] }) +
+  `<circle cx="122" cy="36" r="16" fill="none" stroke="${C.red}" stroke-width="2.2" stroke-dasharray="3 3"/>` +
+  `<path d="M122 26l2.9 6.8 7.4.6-5.6 4.9 1.7 7.2-6.4-3.9-6.4 3.9 1.7-7.2-5.6-4.9 7.4-.6z" fill="${C.sun}"/>` +
+  label(122, 14, 'ΙΔΕΑΙ', { s: 9, c: C.red, ls: 2.5 }) +
+  `<path d="M172 150c0-8 2-12 2-12M172 143c-5-1-7-5-7-7 4 0 7 3 7 7zM174 140c5-2 7-5 7-8-4 1-7 4-7 8z" stroke="${C.olive}" stroke-width="1.8" fill="${C.olive2}" stroke-linecap="round"/>` +
+  label(172, 172, 'ΦΥΣΙΣ', { s: 9, c: C.gray, ls: 2.5 })
+);
+
+ART.ari_lesbos = () => svg(
+  mapAegean() +
+  route('aegean', [[23.73, 37.98], [26.34, 39.49], [26.55, 39.1]], { w: 1.8 }) +
+  pin('aegean', 23.73, 37.98, 'ΑΘΗΝΑΙ', { d: 'd', s: 8 }) +
+  pin('aegean', 26.34, 39.49, 'ΑΣΣΟΣ', { d: 'l', s: 8 }) +
+  pin('aegean', 26.55, 39.1, 'ΛΕΣΒΟΣ', { d: 'd', s: 8 }) +
+  `<g transform="translate(186 140)"><ellipse rx="15" ry="7.5" fill="${C.red}"/><path d="M12 0l11-8v16z" fill="${C.red}"/><circle cx="-8" cy="-1.5" r="1.8" fill="${C.white}"/><path d="M-2-6q4-4 9-2" stroke="${C.dark}" stroke-width="1.6" fill="none"/></g>`
+);
+
+ART.ari_alexander = () => svg(
+  ground(152) +
+  bust('aristotle', 76, 76, 38) + bust('alexander', 244, 76, 38) +
+  label(76, 130, 'ΑΡΙΣΤΟΤΕΛΗΣ', { s: 10, c: C.ink, ls: 1 }) + label(244, 130, 'ΑΛΕΞΑΝΔΡΟΣ', { s: 10, c: C.red, ls: 1 }) +
+  `<rect x="264" y="22" width="36" height="20" rx="10" fill="${C.red}"/>` + label(282, 36.5, '13', { s: 13, c: C.white, ls: 0 }) +
+  scroll(160, 76, 1.15, -4) +
+  `<path d="M120 76h12M188 76h12" stroke="${C.red}" stroke-width="2" stroke-dasharray="3 3" stroke-linecap="round"/>` +
+  label(160, 168, 'ΜΙΕΖΑ', { s: 10, c: C.gray, ls: 4 })
+);
+
+ART.ari_lyceum = () => svg(
+  `<rect y="38" width="320" height="9" fill="${C.stone2}"/>` +
+  label(160, 45, 'ΠΕΡΙΠΑΤΟΣ', { s: 7.5, c: C.red, ls: 4 }) +
+  [20, 84, 148, 212, 276].map(x => `<rect x="${x - 6}" y="47" width="12" height="82" fill="${C.stone}"/><rect x="${x + 2}" y="47" width="4" height="82" fill="${C.stone2}"/>`).join('') +
+  ground(129) +
+  figure(112, 158, { s: 1.1, beard: true, hair: '#4A362E', beardC: '#5B463C', arms: [[-11, 40], [26, 26]] }) +
+  figure(188, 158, { s: 1, robe: '#4A4552', dark: '#2E2A35', hair: '#6B4A2F', arms: [[-11, 40], [11, 40]] }) +
+  figure(240, 158, { s: .95, robe: '#8E5A4A', dark: '#6B3E32', hair: '#4A362E', arms: [[-11, 40], [11, 40]] }) +
+  `<path d="M22 168H292" stroke="${C.red}" stroke-width="2.4" stroke-dasharray="2 9" stroke-linecap="round"/><path d="M300 168l-10-5v10z" fill="${C.red}"/>` +
+  label(50, 150, 'ΛΥΚΕΙΟΝ', { s: 10, c: C.red, ls: 2.5 })
+);
+
+/* ---- 33b-art-aristotle.js ---- */
+/* Scenes for Aristotle, part 2 */
+
+ART.ari_works = () => {
+  const cx = 160, cy = 88, S = C.ink, R = C.red;
+  const ico = {
+    logic: (x, y) => `<circle cx="${x}" cy="${y}" r="11" fill="none" stroke="${R}" stroke-width="1.8"/><circle cx="${x}" cy="${y + 2.5}" r="6" fill="none" stroke="${S}" stroke-width="1.6"/><circle cx="${x}" cy="${y + 3.5}" r="2" fill="${R}"/>`,
+    phys: (x, y) => `<ellipse cx="${x}" cy="${y}" rx="11" ry="4.5" transform="rotate(35 ${x} ${y})" fill="none" stroke="${S}" stroke-width="1.5"/><ellipse cx="${x}" cy="${y}" rx="11" ry="4.5" transform="rotate(-35 ${x} ${y})" fill="none" stroke="${S}" stroke-width="1.5"/><circle cx="${x}" cy="${y}" r="2.8" fill="${R}"/>`,
+    ethics: (x, y) => `<path d="M${x - 11} ${y}H${x + 11}" stroke="${S}" stroke-width="1.6"/><circle cx="${x - 11}" cy="${y}" r="3" fill="${C.gray}"/><circle cx="${x + 11}" cy="${y}" r="3" fill="${C.gray}"/><circle cx="${x}" cy="${y}" r="4.6" fill="${R}"/>`,
+    polis: (x, y) => `<path d="M${x - 11} ${y + 9}H${x + 11}M${x - 9} ${y - 2}L${x} ${y - 10}L${x + 9} ${y - 2}Z" stroke="${S}" stroke-width="1.6" fill="none" stroke-linejoin="round"/><path d="M${x - 6} ${y - 1}v10M${x} ${y - 1}v10M${x + 6} ${y - 1}v10" stroke="${R}" stroke-width="2.4"/>`,
+    mask: (x, y) => `<path d="M${x - 9} ${y - 9}h18v10c0 7-4 10-9 10s-9-3-9-10z" fill="${C.stone}" stroke="${S}" stroke-width="1.5"/><circle cx="${x - 3.5}" cy="${y - 3}" r="1.5" fill="${S}"/><circle cx="${x + 3.5}" cy="${y - 3}" r="1.5" fill="${S}"/><path d="M${x - 4} ${y + 3}q4 4 8 0" stroke="${R}" stroke-width="1.6" fill="none" stroke-linecap="round"/>`,
+    fish: (x, y) => `<ellipse cx="${x - 2}" cy="${y}" rx="9" ry="5" fill="${R}"/><path d="M${x + 6} ${y}l6-5v10z" fill="${R}"/><circle cx="${x - 6}" cy="${y - 1}" r="1.3" fill="${C.white}"/>`
+  };
+  const nodes = [
+    [101, 38, 'ΟΡΓΑΝΟΝ', 'logic', 'u'], [219, 38, 'ΦΥΣΙΚΑ', 'phys', 'u'], [279, 88, 'ΗΘΙΚΑ', 'ethics', 'd'],
+    [219, 138, 'ΠΟΛΙΤΙΚΑ', 'polis', 'd'], [101, 138, 'ΠΟΙΗΤΙΚΗ', 'mask', 'd'], [41, 88, 'ΖΩΑ', 'fish', 'd']
+  ];
+  let g = '';
+  nodes.forEach(n => g += `<path d="M${cx} ${cy}L${n[0]} ${n[1]}" stroke="${C.soft}" stroke-width="4" stroke-linecap="round"/>`);
+  g += bust('aristotle', cx, cy, 27);
+  nodes.forEach(n => {
+    g += `<circle cx="${n[0]}" cy="${n[1]}" r="18" fill="${C.white}" stroke="${C.red}" stroke-width="1.8"/>` + ico[n[3]](n[0], n[1]) +
+      label(n[0], n[4] === 'u' ? n[1] - 24 : n[1] + 31, n[2], { s: 8.5, c: C.ink, ls: 1.2 });
+  });
+  return svg(g);
+};
+
+ART.ari_flight = () => {
+  const house = (x, y) => `<rect x="${x}" y="${y}" width="18" height="14" fill="${C.white}" stroke="${C.stone2}" stroke-width="1.2"/><path d="M${x - 2} ${y}L${x + 9} ${y - 8}L${x + 20} ${y}Z" fill="${C.red}"/>`;
+  return svg(
+    `<path d="M214 130h106v46H214z" fill="${C.sea}"/><path d="M214 132q10 4 20 0t20 0 20 0 20 0 12 0" stroke="${C.white}" stroke-width="2" fill="none" opacity=".8"/>` +
+    ground(146) + `<path d="M214 146h106v30H214z" fill="${C.sea}"/>` +
+    temple(62, 146, 76, 44, 4) + label(62, 168, 'ΑΘΗΝΑΙ', { s: 10, c: C.ink, ls: 2 }) +
+    house(236, 118) + house(262, 112) + house(288, 118) + `<path d="M214 130q40-8 106 0v6H214z" fill="${C.land}"/>` +
+    ship(268, 152, .55) + label(268, 172, 'ΧΑΛΚΙΣ', { s: 10, c: C.ink, ls: 2 }) +
+    `<path d="M108 96Q160 22 214 92" fill="none" stroke="${C.red}" stroke-width="2.4" stroke-dasharray="6 5" stroke-linecap="round"/><path d="M218 98l-3-13-10 8z" fill="${C.red}"/>` +
+    bust('aristotle', 160, 58, 21) +
+    scroll(48, 40, 1.15, -6) + `<circle cx="66" cy="56" r="9" fill="${C.red}"/><circle cx="66" cy="56" r="4.6" fill="none" stroke="${C.soft}" stroke-width="1.6"/>` +
+    label(48, 80, 'ΑΣΕΒΕΙΑ', { s: 9, c: C.red, ls: 2 })
+  );
+};
+
+ART.ari_death = () => svg(
+  `<rect width="320" height="176" fill="#FDEDEA"/>` +
+  `<path d="M0 116H320V176H0z" fill="${C.sea}"/><path d="M64 116a46 46 0 0 1 92 0z" fill="${C.sun}"/><path d="M78 116a32 32 0 0 1 64 0z" fill="#F7CD78"/>` +
+  `<path d="M0 124q20 5 40 0t40 0 40 0 40 0 40 0 40 0 40 0 40 0M0 146q20 5 40 0t40 0 40 0 40 0 40 0 40 0 40 0 40 0" stroke="${C.white}" stroke-width="2" fill="none" opacity=".75"/>` +
+  scroll(226, 78, 2, -4) + `<circle cx="240" cy="104" r="8" fill="${C.red}"/><circle cx="240" cy="104" r="4" fill="none" stroke="${C.soft}" stroke-width="1.6"/>` +
+  `<rect x="56" y="26" width="36" height="20" rx="10" fill="${C.red}"/>` + label(74, 40.5, '322', { s: 12, c: C.white, ls: 0.5 }) +
+  label(160, 168, 'ΧΑΛΚΙΣ', { s: 10, c: C.gray, ls: 4 })
+);
+
+/* ---- 34-avatars.js ---- */
+/* Stylized busts, one <symbol> each. Used by the tabs, the hero, the scenes and the lineage chart. */
+const AVATAR_DEFS = `<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs>
+
+<symbol id="av-socrates" viewBox="0 0 100 100">
+  <path d="M10 100C12 80 30 71 50 71s38 9 40 29z" fill="#D32F2F"/>
+  <path d="M38 71c3 9 9 13 12 13s9-4 12-13c-4-3-8-4-12-4s-8 1-12 4z" fill="#B71C1C"/>
+  <path d="M44 56h12v16c-3 3-9 3-12 0z" fill="#E5BDA2"/>
+  <path d="M32 33c-8 3-8 17-2 22 1-7 2-14 4-19zM68 33c8 3 8 17 2 22-1-7-2-14-4-19z" fill="#BDB8C2"/>
+  <ellipse cx="50" cy="40" rx="18.5" ry="21.5" fill="#F2D6C1"/>
+  <circle cx="31.7" cy="42" r="3.2" fill="#E5BDA2"/><circle cx="68.3" cy="42" r="3.2" fill="#E5BDA2"/>
+  <path d="M33 47c-1 18 7 29 17 29s18-11 17-29c-5 9-10 11-17 11s-12-2-17-11z" fill="#D8D3DC"/>
+  <path d="M38 33.5q5-4 10-1.2M62 33.5q-5-4-10-1.2" stroke="#8D8893" stroke-width="2.6" fill="none" stroke-linecap="round"/>
+  <circle cx="42.5" cy="38.5" r="1.7" fill="#26222B"/><circle cx="57.5" cy="38.5" r="1.7" fill="#26222B"/>
+  <ellipse cx="50" cy="46" rx="6.4" ry="4.8" fill="#E2B79A"/>
+  <path d="M38 53c5-5 9-2 12 0 3-2 7-5 12 0-4 6-8 4-12 4s-8 2-12-4z" fill="#C4BFCA"/>
+</symbol>
+
+<symbol id="av-plato" viewBox="0 0 100 100">
+  <path d="M10 100C12 80 30 71 50 71s38 9 40 29z" fill="#D32F2F"/>
+  <path d="M38 71c3 9 9 13 12 13s9-4 12-13c-4-3-8-4-12-4s-8 1-12 4z" fill="#B71C1C"/>
+  <path d="M28 40C26 20 38 11 50 11s24 9 22 29c1 14 0 28-4 40-4-8-6-17-8-26H40c-2 9-4 18-8 26-4-12-5-26-4-40z" fill="#A9A4B0"/>
+  <path d="M44 56h12v16c-3 3-9 3-12 0z" fill="#E5BDA2"/>
+  <ellipse cx="50" cy="41" rx="17" ry="21" fill="#F2D6C1"/>
+  <path d="M34 28c4-9 12-12 16-12s12 3 16 12c-6-4-11-5-16-5s-10 1-16 5z" fill="#A9A4B0"/>
+  <path d="M34 50c0 18 6 32 16 32s16-14 16-32c-4 8-8 10-16 10s-12-2-16-10z" fill="#C6C1CC"/>
+  <path d="M40 66c3 3 3 8 2 12M50 66c0 4 0 9 0 13M60 66c-3 3-3 8-2 12" stroke="#A9A4B0" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+  <path d="M39 34q4-3 9-1M61 34q-4-3-9-1" stroke="#8D8893" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+  <circle cx="43" cy="39" r="1.6" fill="#26222B"/><circle cx="57" cy="39" r="1.6" fill="#26222B"/>
+  <path d="M50 40l-3 9h6z" fill="#E2B79A"/>
+  <path d="M41 54c4-3 7-1 9 0 2-1 5-3 9 0-3 4-6 3-9 3s-6 1-9-3z" fill="#B3AEB9"/>
+</symbol>
+
+<symbol id="av-aristotle" viewBox="0 0 100 100">
+  <path d="M10 100C12 80 30 71 50 71s38 9 40 29z" fill="#D32F2F"/>
+  <path d="M30 100c2-10 10-21 20-21 4 8 6 15 7 21z" fill="#B71C1C"/>
+  <path d="M44 56h12v16c-3 3-9 3-12 0z" fill="#E5BDA2"/>
+  <ellipse cx="50" cy="40" rx="17.5" ry="21" fill="#F2D6C1"/>
+  <circle cx="32.7" cy="42" r="3" fill="#E5BDA2"/><circle cx="67.3" cy="42" r="3" fill="#E5BDA2"/>
+  <path d="M32 38c-4-18 7-26 18-26s22 8 18 26c-2-8-8-12-18-12s-16 4-18 12z" fill="#4A362E"/>
+  <circle cx="38" cy="19" r="5" fill="#4A362E"/><circle cx="46" cy="14.5" r="5.2" fill="#4A362E"/><circle cx="55" cy="14.5" r="5.2" fill="#4A362E"/><circle cx="63" cy="19" r="5" fill="#4A362E"/>
+  <path d="M34 49c1 13 8 20 16 20s15-7 16-20c-4 6-8 8-16 8s-12-2-16-8z" fill="#5B463C"/>
+  <path d="M38.5 34q4.5-3.5 9.5-.5M61.5 34q-4.5-3.5-9.5-.5" stroke="#4A362E" stroke-width="2.6" fill="none" stroke-linecap="round"/>
+  <circle cx="43" cy="39" r="1.7" fill="#26222B"/><circle cx="57" cy="39" r="1.7" fill="#26222B"/>
+  <path d="M50 39.5l-3.2 9.5h6.4z" fill="#E2B79A"/>
+  <path d="M42 54c3-2.5 6-1 8 0 2-1 5-2.500 8 0-3 3.500-5 3-8 3s-5 .5-8-3z" fill="#493A33"/>
+</symbol>
+
+<symbol id="av-alexander" viewBox="0 0 100 100">
+  <path d="M10 100C12 80 30 71 50 71s38 9 40 29z" fill="#9C2A2A"/>
+  <circle cx="50" cy="76" r="3.4" fill="#F0B445"/>
+  <path d="M44 56h12v16c-3 3-9 3-12 0z" fill="#E5BDA2"/>
+  <ellipse cx="50" cy="41" rx="16.5" ry="20" fill="#F4DAC6"/>
+  <circle cx="33.7" cy="43" r="2.8" fill="#E5BDA2"/><circle cx="66.3" cy="43" r="2.8" fill="#E5BDA2"/>
+  <path d="M33 40c-6-14 3-27 17-27s23 13 17 27c-1-7-6-12-12-13-5 2-11 2-15 0-4 2-6 7-7 13z" fill="#8A5A3C"/>
+  <circle cx="34" cy="30" r="5" fill="#8A5A3C"/><circle cx="66" cy="30" r="5" fill="#8A5A3C"/><circle cx="40" cy="20" r="5" fill="#8A5A3C"/><circle cx="60" cy="20" r="5" fill="#8A5A3C"/>
+  <path d="M34 31q16-9 32 0" stroke="#F0B445" stroke-width="2.6" fill="none" stroke-linecap="round"/>
+  <path d="M39 37q4-2.500 8-.5M61 37q-4-2.500-8-.5" stroke="#6F4A30" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+  <circle cx="43" cy="41" r="1.7" fill="#26222B"/><circle cx="57" cy="41" r="1.7" fill="#26222B"/>
+  <path d="M50 41l-2.600 8h5.200z" fill="#E8C3A5"/>
+  <path d="M44.500 54.500q5.500 3 11 0" stroke="#B5654F" stroke-width="2" fill="none" stroke-linecap="round"/>
+</symbol>
+
+</defs></svg>`;
+
+/* ---- 80-ui-icons.js ---- */
+/* Line icons (24 x 24). The .i class in CSS sets stroke, width and caps. */
+const icon = (inner, cls = '') =>
+  `<svg class="i${cls ? ' ' + cls : ''}" viewBox="0 0 24 24" aria-hidden="true" focusable="false">${inner}</svg>`;
+
+const ICON = {
+  menu: icon('<path d="M4 7h16M4 12h16M4 17h16"/>'),
+  back: icon('<path d="M15 5l-7 7 7 7"/>', 'rtl-flip'),
+  close: icon('<path d="M6 6l12 12M18 6L6 18"/>'),
+  check: icon('<path d="M5 12.5l4.5 4.5L19 7.5"/>'),
+  note: icon('<path d="M5 20.5V5.5a2 2 0 0 1 2-2h8.5a2 2 0 0 1 2 2V8.5"/><path d="M9 8h5M9 12h3.5"/><path d="M18.2 11.3l2.3 2.3-6.2 6.2-3.1.8.8-3.1z"/>'),
+  globe: icon('<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3.2 3.2 3.2 14.8 0 18M12 3c-3.2 3.2-3.2 14.8 0 18"/>'),
+  calendar: icon('<rect x="4" y="5.5" width="16" height="14.5" rx="2"/><path d="M4 10h16M8.5 3.5v4M15.5 3.5v4"/>'),
+  pin: icon('<path d="M12 21s6.5-5.7 6.5-11a6.5 6.5 0 0 0-13 0c0 5.3 6.5 11 6.5 11z"/><circle cx="12" cy="10" r="2.3"/>'),
+  home: icon('<path d="M4 11.5L12 4l8 7.5V20H4z"/><path d="M10 20v-5.5h4V20"/>'),
+  replay: icon('<path d="M20 12a8 8 0 1 1-2.6-5.9"/><path d="M20 4.5V9h-4.5"/>')
+};
+
+/* ---- 85-ui-render.js ---- */
+/* Markup builders. Each one returns an HTML string in the current language. */
+const ORDER = ['aristotle', 'socrates', 'plato'];
+
+const avatar = (id, cls) =>
+  `<span class="${cls}"><svg viewBox="0 0 100 100" aria-hidden="true" focusable="false"><use href="#av-${id}"/></svg></span>`;
+
+const closeBtn = () =>
+  `<button type="button" class="icon-btn" data-act="close" aria-label="${esc(ui('close'))}">${ICON.close}</button>`;
+
+/* ---------- home ---------- */
+function tabsHTML(active) {
+  return `<nav class="tabs gutter" role="tablist" aria-label="${esc(ui('tabsLabel'))}">` +
+    ORDER.map(id => {
+      const on = id === active;
+      return `<button type="button" class="tab${on ? ' is-on' : ''}" role="tab" id="tab-${id}" aria-selected="${on}" ` +
+        `aria-controls="panel" tabindex="${on ? 0 : -1}" data-act="tab" data-id="${id}">` +
+        `${avatar(id, 'tab-av')}<span class="tab-name">${esc(tx(DATA[id].name))}</span></button>`;
+    }).join('') + '</nav>';
+}
+
+function panelHTML(id) {
+  const p = DATA[id];
+  return `<section class="panel gutter" id="panel" role="tabpanel" aria-labelledby="tab-${id}">` +
+    `<div class="panel-top"><div class="panel-id"><h2 class="p-name">${esc(tx(p.name))}</h2>` +
+    `<p class="p-epithet">${esc(tx(p.tag))}</p></div>${avatar(id, 'p-bust')}</div>` +
+    `<div class="chips"><span class="chip">${ICON.calendar}${esc(fmtYear(p.span))}</span>` +
+    `<span class="chip">${ICON.pin}${esc(tx(p.from))}</span></div>` +
+    `<p class="p-intro">${esc(tx(p.intro))}</p>` +
+    `<button type="button" class="cta" data-act="open" data-id="${id}">${esc(ui('open'))}</button></section>`;
+}
+
+function homeHTML(active) {
+  return `<div class="home" id="home">` +
+    `<header class="topbar gutter"><button type="button" class="icon-btn" data-act="menu" aria-label="${esc(ui('menu'))}">${ICON.menu}</button>` +
+    `<h1 class="brand">${esc(ui('appName'))}</h1><span></span></header>` +
+    `<section class="founder gutter"><img class="founder-photo" src="${PHOTO_SRC}" width="78" height="78" alt="${esc(ui('photoAlt'))}">` +
+    `<div class="founder-text"><p class="founder-name">${esc(ui('founder'))}</p><p class="founder-badge">${esc(ui('badge'))}</p></div></section>` +
+    `<div class="meander" aria-hidden="true"></div>${tabsHTML(active)}${panelHTML(active)}</div>`;
+}
+
+/* ---------- philosopher view ---------- */
+function menuHTML() {
+  return `<div class="menu" role="menu" hidden>` + LANG_ORDER.map(l => {
+    const on = l === lang;
+    return `<button type="button" role="menuitemradio" aria-checked="${on}" data-act="lang" data-lang="${l}" lang="${l}" dir="${LANGS[l].dir}">` +
+      `<span>${LANGS[l].name}</span>${on ? ICON.check : ''}</button>`;
+  }).join('') + '</div>';
+}
+
+function stepHTML(s, i) {
+  const when = s.yl ? tx(s.yl) : fmtYear(s.y);
+  return `<li class="step" id="st${i}"><div class="step-body">` +
+    `<div class="step-head"><span class="year">${esc(when)}</span><span class="chip">${ICON.pin}${esc(tx(s.place))}</span></div>` +
+    `<figure class="art-card" role="img" aria-label="${esc(tx(s.t))}">${ART[s.art]()}</figure>` +
+    `<h3>${esc(tx(s.t))}</h3><p>${esc(tx(s.d))}</p></div></li>`;
+}
+
+function detailHTML(id) {
+  const p = DATA[id], n = p.stops.length;
+  const chips = p.stops.map((s, i) =>
+    `<button type="button" data-act="jump" data-i="${i}">${esc(s.ys || shortYear(s.y))}</button>`).join('') +
+    `<button type="button" data-act="jump" data-i="${n}">${esc(ui('legacy'))}</button>`;
+  return `<div class="detail" id="detail" data-id="${id}">` +
+    `<div class="dbar"><div class="dbar-row gutter">` +
+    `<button type="button" class="icon-btn" data-act="back" aria-label="${esc(ui('back'))}">${ICON.back}</button>` +
+    `<h1 class="dbar-title">${esc(tx(p.name))}</h1>` +
+    `<div class="dbar-tools">` +
+    `<button type="button" class="icon-btn" data-act="notes" aria-label="${esc(ui('notes'))}">${ICON.note}<i class="dot" id="noteDot" hidden></i></button>` +
+    `<div class="lang"><button type="button" class="icon-btn" data-act="lang-toggle" aria-haspopup="menu" aria-expanded="false" aria-label="${esc(ui('translate'))}">${ICON.globe}</button>${menuHTML()}</div>` +
+    `</div></div>` +
+    `<div class="progress" aria-hidden="true"><i id="bar"></i></div>` +
+    `<div class="jump gutter" id="jump" role="group" aria-label="${esc(ui('timeline'))}">${chips}</div></div>` +
+    `<header class="hero gutter">${avatar(id, 'p-bust')}<div><h2>${esc(tx(p.name))}</h2><p>${esc(tx(p.tag))}</p></div></header>` +
+    `<p class="tl-title gutter">${esc(ui('timeline'))}</p>` +
+    `<ol class="timeline gutter">${p.stops.map(stepHTML).join('')}</ol>` +
+    `<section class="legacy gutter" id="st${n}"><h3>${esc(tx(p.legacy.t))}</h3><p>${esc(tx(p.legacy.d))}</p>` +
+    `<p class="cap">${esc(ui('chain'))}</p><figure class="art-card" role="img" aria-label="${esc(ui('chain'))}">${ART.lineage(id)}</figure></section>` +
+    `<div class="foot gutter"><button type="button" class="cta cta-ghost" data-act="back">${esc(ui('backHome'))}</button></div></div>`;
+}
+
+/* ---------- overlays ---------- */
+function notesHTML(id) {
+  return `<div class="layer"><div class="scrim" data-act="close"></div>` +
+    `<section class="sheet" role="dialog" aria-modal="true" aria-labelledby="notesTitle">` +
+    `<div class="sheet-head gutter"><h3 id="notesTitle">${esc(ui('notesTitle'))} ${esc(tx(DATA[id].name))}</h3>${closeBtn()}</div>` +
+    `<div class="note-wrap"><textarea id="noteArea" class="note-area" rows="7" dir="auto" placeholder="${esc(ui('notesPlaceholder'))}" aria-label="${esc(ui('notes'))}"></textarea></div>` +
+    `<div class="sheet-foot gutter"><span class="note-status" id="noteStatus" role="status"></span>` +
+    `<button type="button" class="btn btn-ghost" data-act="note-clear">${esc(ui('clear'))}</button>` +
+    `<button type="button" class="btn btn-solid" data-act="note-save">${esc(ui('save'))}</button></div>` +
+    `<p class="note-hint gutter">${esc(ui('notesHint'))}</p></section></div>`;
+}
+
+function drawerHTML() {
+  const here = state.view === 'detail' ? state.phil : null;
+  const items = ORDER.map(id =>
+    `<button type="button" class="nav-item" data-act="goto" data-id="${id}"${here === id ? ' aria-current="true"' : ''}>` +
+    `${avatar(id, 'mini')}<span>${esc(tx(DATA[id].name))}</span></button>`).join('');
+  const langs = LANG_ORDER.map(l =>
+    `<button type="button" data-act="lang" data-lang="${l}" aria-pressed="${l === lang}" lang="${l}" dir="${LANGS[l].dir}">${LANGS[l].name}</button>`).join('');
+  return `<div class="layer"><div class="scrim" data-act="close"></div><div class="drawer-frame">` +
+    `<aside class="drawer" role="dialog" aria-modal="true" aria-label="${esc(ui('menu'))}">` +
+    `<div class="drawer-head"><h3>${esc(ui('appName'))}</h3>${closeBtn()}</div>` +
+    `<button type="button" class="nav-item" data-act="home"${state.view === 'home' ? ' aria-current="true"' : ''}>${ICON.home}<span>${esc(ui('home'))}</span></button>` +
+    `<h4>${esc(ui('philosophers'))}</h4>${items}` +
+    `<h4>${esc(ui('language'))}</h4><div class="seg" role="group" aria-label="${esc(ui('language'))}">${langs}</div>` +
+    `<button type="button" class="nav-item" data-act="replay">${ICON.replay}<span>${esc(ui('replay'))}</span></button>` +
+    `<p class="drawer-foot">الجهل منبع للشر</p></aside></div></div>`;
+}
+
+/* ---- 90-app.js ---- */
+/* App behaviour: state, storage, navigation, overlays, language, scroll tracking. */
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
+const frame = $('#frame'), appEl = $('#app'), layersEl = $('#layers');
+const reduce = !!(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches);
+const MOTTO = 'الجهل منبع للشر';
+
+/* localStorage can be missing or blocked; keep a copy in memory so the page still works */
+const mem = {};
+const store = {
+  get(k) { try { const v = localStorage.getItem(k); if (v !== null) return v; } catch (e) { /* blocked */ } return k in mem ? mem[k] : null; },
+  set(k, v) { mem[k] = v; try { localStorage.setItem(k, v); } catch (e) { /* blocked */ } },
+  del(k) { delete mem[k]; try { localStorage.removeItem(k); } catch (e) { /* blocked */ } }
+};
+const noteKey = id => 'pf.notes.' + id;
+const hasNote = id => !!(store.get(noteKey(id)) || '').trim();
+
+const state = { view: 'home', tab: ORDER[0], phil: null, homeY: 0, step: -1 };
+
+/* ---------- language ---------- */
+function applyDir() {
+  const d = LANGS[lang].dir;
+  document.documentElement.lang = lang;
+  document.documentElement.dir = d;
+  frame.lang = lang;
+  frame.dir = d;
+}
+function setLang(l) {
+  if (!LANGS[l]) return;
+  lang = l;
+  store.set('pf.lang', l);
+  applyDir();
+  closeLayers(true);
+  if (state.view === 'detail') {
+    const at = state.step;
+    renderDetail(state.phil);
+    if (at >= 0) scrollToStep(at, true);
+  } else {
+    renderHome();
+  }
+}
+
+/* ---------- views ---------- */
+function renderHome() {
+  appEl.innerHTML = homeHTML(state.tab);
+}
+function renderDetail(id) {
+  appEl.innerHTML = detailHTML(id);
+  updateNoteDot();
+  trackScroll();
+}
+function openPhil(id) {
+  if (!DATA[id]) return;
+  if (state.view === 'home') state.homeY = window.scrollY;
+  state.view = 'detail';
+  state.phil = id;
+  state.tab = id;
+  state.step = -1;
+  renderDetail(id);
+  window.scrollTo(0, 0);
+}
+function goHome() {
+  state.view = 'home';
+  state.phil = null;
+  renderHome();
+  window.scrollTo(0, state.homeY || 0);
+}
+function selectTab(id, focus) {
+  state.tab = id;
+  $$('.tab', appEl).forEach(b => {
+    const on = b.dataset.id === id;
+    b.classList.toggle('is-on', on);
+    b.setAttribute('aria-selected', String(on));
+    b.tabIndex = on ? 0 : -1;
+    if (on && focus) b.focus();
+  });
+  const old = $('#panel', appEl);
+  if (old) old.outerHTML = panelHTML(id);
+}
+
+/* ---------- timeline: progress, current stop, jumping ---------- */
+function scrollToStep(i, instant) {
+  const el = $('#st' + i);
+  if (!el) return;
+  const top = el.getBoundingClientRect().top + window.scrollY - 118;
+  window.scrollTo({ top: Math.max(0, top), behavior: instant || reduce ? 'auto' : 'smooth' });
+}
+function markStep(cur) {
+  $$('.step', appEl).forEach((el, i) => el.classList.toggle('is-on', i <= cur));
+  const jump = $('#jump', appEl);
+  const chips = $$('button', jump || appEl);
+  chips.forEach((b, i) => b.classList.toggle('is-on', i === cur));
+  const c = chips[cur];
+  if (jump && c) {
+    const jr = jump.getBoundingClientRect(), cr = c.getBoundingClientRect();
+    jump.scrollBy({ left: (cr.left + cr.width / 2) - (jr.left + jr.width / 2), behavior: reduce ? 'auto' : 'smooth' });
+  }
+}
+function trackScroll() {
+  if (state.view !== 'detail') return;
+  const bar = $('#bar', appEl);
+  if (!bar) return;
+  const doc = document.documentElement;
+  const max = doc.scrollHeight - window.innerHeight;
+  bar.style.transform = 'scaleX(' + (max > 0 ? Math.min(1, Math.max(0, window.scrollY / max)) : 0).toFixed(3) + ')';
+  const items = $$('.step, .legacy', appEl);
+  let cur = -1;
+  items.forEach((el, i) => { if (el.getBoundingClientRect().top <= 150) cur = i; });
+  if (max > 0 && window.scrollY >= max - 4) cur = items.length - 1;
+  if (cur !== state.step) { state.step = cur; markStep(cur); }
+}
+let ticking = false;
+window.addEventListener('scroll', () => {
+  if (state.view !== 'detail' || ticking) return;
+  ticking = true;
+  requestAnimationFrame(() => { ticking = false; trackScroll(); });
+}, { passive: true });
+
+/* ---------- language dropdown ---------- */
+function toggleMenu(force) {
+  const m = $('.menu', appEl), b = $('[data-act="lang-toggle"]', appEl);
+  if (!m || !b) return;
+  const open = force === undefined ? m.hidden : force;
+  m.hidden = !open;
+  b.setAttribute('aria-expanded', String(open));
+  if (open) { const cur = $('[aria-checked="true"]', m) || m.firstElementChild; if (cur) cur.focus(); }
+}
+const menuOpen = () => { const m = $('.menu', appEl); return !!m && !m.hidden; };
+
+/* ---------- overlays ---------- */
+let opener = null;
+function openLayer(html, focusSel) {
+  closeLayers(true);
+  opener = document.activeElement;
+  layersEl.innerHTML = html;
+  document.documentElement.classList.add('no-scroll');
+  const f = (focusSel && $(focusSel, layersEl)) || $('button, textarea', layersEl);
+  if (f) f.focus({ preventScroll: true });
+}
+function closeLayers(silent) {
+  if (!layersEl.firstElementChild) return;
+  flushNote();
+  layersEl.innerHTML = '';
+  document.documentElement.classList.remove('no-scroll');
+  if (!silent && opener && document.contains(opener)) { try { opener.focus({ preventScroll: true }); } catch (e) { /* ignore */ } }
+  opener = null;
+}
+function trapFocus(e) {
+  if (!layersEl.firstElementChild) return;
+  const list = $$('button, textarea, [href], [tabindex]:not([tabindex="-1"])', layersEl).filter(el => !el.disabled);
+  if (!list.length) return;
+  const first = list[0], last = list[list.length - 1];
+  if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+  else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+}
+
+/* ---------- notes ---------- */
+let noteTimer = 0, noteSaved = '';
+function updateNoteDot() {
+  const d = $('#noteDot');
+  if (d && state.phil) d.hidden = !hasNote(state.phil);
+}
+function openNotes() {
+  const id = state.phil;
+  if (!id) return;
+  openLayer(notesHTML(id), '#noteArea');
+  const ta = $('#noteArea');
+  ta.value = store.get(noteKey(id)) || '';
+  noteSaved = ta.value;
+  ta.addEventListener('input', () => {
+    const st = $('#noteStatus');
+    if (st) st.textContent = '';
+    clearTimeout(noteTimer);
+    noteTimer = setTimeout(() => saveNote(false), 600);
+  });
+}
+function saveNote(toast) {
+  const ta = $('#noteArea');
+  if (!ta || !state.phil) return;
+  const v = ta.value;
+  if (v.trim()) store.set(noteKey(state.phil), v); else store.del(noteKey(state.phil));
+  noteSaved = v;
+  updateNoteDot();
+  const st = $('#noteStatus');
+  if (st) st.textContent = ui('saved');
+  if (toast) showToast(ui('saved'));
+}
+function flushNote() {
+  clearTimeout(noteTimer);
+  const ta = $('#noteArea');
+  if (ta && ta.value !== noteSaved) saveNote(false);
+}
+function showToast(msg) {
+  const t = document.createElement('div');
+  t.className = 'toast';
+  t.setAttribute('role', 'status');
+  t.textContent = msg;
+  frame.appendChild(t);
+  setTimeout(() => t.remove(), 2000);
+}
+
+/* ---------- intro ---------- */
+function watchSplash(el) {
+  el.addEventListener('animationend', e => { if (e.animationName === 'splash-out') el.remove(); });
+  setTimeout(() => el.remove(), 3400);
+}
+function playSplash() {
+  const old = $('#splash');
+  if (old) old.remove();
+  const s = document.createElement('div');
+  s.className = 'splash';
+  s.id = 'splash';
+  s.setAttribute('aria-hidden', 'true');
+  s.innerHTML = '<div class="splash-in"><p class="motto">' + MOTTO + '</p><i class="splash-rule"></i></div>';
+  frame.prepend(s);
+  watchSplash(s);
+}
+
+/* ---------- events ---------- */
+document.addEventListener('click', e => {
+  const t = e.target.closest('[data-act]');
+  if (!e.target.closest('.lang')) toggleMenu(false);
+  if (!t) return;
+  const id = t.dataset.id;
+  switch (t.dataset.act) {
+    case 'tab': selectTab(id); break;
+    case 'open': openPhil(id); break;
+    case 'back': goHome(); break;
+    case 'menu': openLayer(drawerHTML(), '.drawer [data-act="close"]'); break;
+    case 'close': closeLayers(); break;
+    case 'home': closeLayers(true); if (state.view !== 'home') goHome(); break;
+    case 'goto': closeLayers(true); openPhil(id); break;
+    case 'replay': closeLayers(true); playSplash(); break;
+    case 'notes': openNotes(); break;
+    case 'note-save': saveNote(true); break;
+    case 'note-clear': { const ta = $('#noteArea'); if (ta) { ta.value = ''; ta.focus(); const st = $('#noteStatus'); if (st) st.textContent = ''; } break; }
+    case 'lang-toggle': toggleMenu(); break;
+    case 'lang': setLang(t.dataset.lang); break;
+    case 'jump': scrollToStep(+t.dataset.i); break;
+    default: break;
+  }
+});
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    if (layersEl.firstElementChild) { closeLayers(); return; }
+    if (menuOpen()) { toggleMenu(false); const b = $('[data-act="lang-toggle"]', appEl); if (b) b.focus(); return; }
+    if (state.view === 'detail') goHome();
+    return;
+  }
+  if (e.key === 'Tab') { trapFocus(e); return; }
+  const tab = e.target.closest && e.target.closest('.tab');
+  if (tab && ['ArrowLeft', 'ArrowRight', 'Home', 'End'].indexOf(e.key) > -1) {
+    e.preventDefault();
+    const rtl = LANGS[lang].dir === 'rtl';
+    let i = ORDER.indexOf(tab.dataset.id);
+    if (e.key === 'ArrowRight') i += rtl ? -1 : 1;
+    else if (e.key === 'ArrowLeft') i += rtl ? 1 : -1;
+    else i = e.key === 'Home' ? 0 : ORDER.length - 1;
+    selectTab(ORDER[(i + ORDER.length) % ORDER.length], true);
+    return;
+  }
+  const item = e.target.closest && e.target.closest('.menu button');
+  if (item && (e.key === 'ArrowDown' || e.key === 'ArrowUp')) {
+    e.preventDefault();
+    const all = $$('.menu button', appEl), i = all.indexOf(item);
+    all[(i + (e.key === 'ArrowDown' ? 1 : all.length - 1)) % all.length].focus();
+  }
+});
+
+/* ---------- start ---------- */
+(function init() {
+  const saved = store.get('pf.lang');
+  if (saved && LANGS[saved]) lang = saved;
+  document.body.insertAdjacentHTML('afterbegin', AVATAR_DEFS);
+  applyDir();
+  renderHome();
+  const sp = $('#splash');
+  if (sp) watchSplash(sp);
+})();
+
+})();
+</script>
+</body>
+</html>
